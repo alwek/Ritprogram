@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1047.0" prefWidth="1397.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <VBox prefHeight="141.0" prefWidth="838.0" BorderPane.alignment="CENTER">
          <children>
@@ -43,7 +45,7 @@
          </children>
       </VBox>
    </top>
-   <right>
-      <Canvas height="912.0" width="1400.0" BorderPane.alignment="CENTER" />
-   </right>
+   <center>
+      <Canvas id="canvas" height="725.0" width="994.0" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>
