@@ -16,6 +16,7 @@ public class Main extends Application{
         primaryStage.setTitle("Extreme Ultimate Drawing Elite Professional Tool Deluxe Edition");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
+        //opens the window
     }//start
 
     public static void main(String[] args){
