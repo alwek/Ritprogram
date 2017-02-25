@@ -6,22 +6,14 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import model.*;
-import model.Rectangle;
-import model.Shape;
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * Created by dani on 2017-02-25.
@@ -33,12 +25,17 @@ public class View extends BorderPane{
     private int counter = 0;
     private double x1,x2,y1,y2;
     private DrawController controller;
+    private ShapeFactory shapeFactory;
 
     public View(FileClass fileClass){
         this.fileClass = fileClass;
         init();
         createMenu();
     }//View
+
+    public void setController(DrawController controller){
+        this.controller = controller;
+    }
 
     private void init(){
         Pane wrapperPane = new Pane();
@@ -137,26 +134,6 @@ public class View extends BorderPane{
         return menuBar;
     }//createMenuBar
 
-    public void setController(DrawController controller){
-        this.controller = controller;
-    }
-
-    private void exportImage(String imageName) {
-        BufferedImage image = new BufferedImage((int) canvas.getWidth(), (int) canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics = image.createGraphics();
-
-        draw(canvas);
-        try{
-            System.out.println("Exporting image: " + imageName);
-            FileOutputStream out = new FileOutputStream(imageName);
-            ImageIO.write(image, "png", out);
-            out.close();
-        }//try
-        catch (IOException e){
-            e.printStackTrace();
-        }//catch
-    }//exportImage
-
     private EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>(){
         @Override
         public void handle(MouseEvent mouseEvent) {
@@ -167,8 +144,13 @@ public class View extends BorderPane{
                     counter = 0;
                     x2 = mouseEvent.getX();
                     y2 = mouseEvent.getY();
-                    drawRectangle(x1,y1,x2,y2);
-                    drawLine(x1,y1,x2,y2);
+                    // ny kod --> factory...
+                    shapeFactory = new ShapeFactoryImpl(new StraightLine(x1,x2,y1,y2), new StraightRectangle(x1,x2,y1,y2), new StraightCircle(x1,x2,y1,y2));
+                    controller.addShape(shapeFactory);
+                    controller.drawShape(shapeFactory, gc);
+
+                    //   drawRectangle(x1,y1,x2,y2);
+                    //   drawLine(x1,y1,x2,y2);
                 }//if
                 else{
                     x1 = mouseEvent.getX();
@@ -201,15 +183,18 @@ public class View extends BorderPane{
     }//draw on resize
 
     private void drawLine(double x1, double y1, double x2, double y2){
-        Line line = new Line(x1, x2, y1, y2);
-        controller.addShape(line);
-        controller.drawShape(line, gc);
+    //    Line line = new Line(x1, x2, y1, y2);
+    // controller.addShape(line);
+    //    controller.drawShape(line, gc);
+
+        controller.addShape(shapeFactory);
+        controller.drawShape(shapeFactory, gc);
     }//draw on mouse event
 
     private void drawRectangle(double x1, double y1, double x2, double y2){
-        Rectangle rectangle = new Rectangle(x1,x2,y1,y2);
-        controller.addShape(rectangle);
-        controller.drawShape(rectangle, gc);
+     //   Rectangle rectangle = new Rectangle(x1,x2,y1,y2);
+     //   controller.addShape(rectangle);
+     //   controller.drawShape(rectangle, gc);
     }//draw rectangle
 
     private void drawCircle(){
@@ -218,9 +203,10 @@ public class View extends BorderPane{
 
     public void drawFromReload(){
         try{
-            ArrayList<Shape> list = (ArrayList<Shape>) controller.getShapeList();
-            for(Shape aList : list) {
-                aList.draw(gc);
+            ArrayList<ShapeFactory> list = (ArrayList<ShapeFactory>) controller.getShapeList();
+            for(ShapeFactory aList : list) {
+                aList.createLine().draw(gc);
+                aList.createRectangle().draw(gc);
             }//for
         }//try
         catch (NullPointerException ex){

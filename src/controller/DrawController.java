@@ -2,10 +2,10 @@ package controller;
 
 import javafx.scene.canvas.GraphicsContext;
 import model.DrawModel;
-import model.Line;
-import model.Shape;
+import model.ShapeFactory;
 import view.View;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,27 +21,31 @@ public class DrawController {
         this.view = view;
     }//DrawController
 
-    public void setShapeList(List<Shape> shapesList){
+    public void setShapeList(List<ShapeFactory> shapesList){
         drawModel.setShapeList(shapesList);
     }
 
-    public List<Shape> getShapeList(){
+    public List<ShapeFactory> getShapeList(){
         return drawModel.getShapeList();
     }
 
-    public void addShape(Shape shape){
+    public void addShape(ShapeFactory shape){
         drawModel.addShape(shape);
     }
 
-    public Shape getShape(int index){
+    public ShapeFactory getShape(int index){
         return drawModel.getShape(index);
     }
 
-    public void drawShape(Shape shape, GraphicsContext gc){
+    public void drawShape(ShapeFactory shape, GraphicsContext gc){
         drawModel.drawShape(shape, gc);
     }
 
     public void drawFromReload(){
         view.drawFromReload();
     }
+
+    public void serializeToFile(String filename) throws IOException { drawModel.serializeToFile(filename); }
+
+    public void deSerializeFromFile(String filename) throws IOException, ClassNotFoundException { drawModel.deSerializeFromFile(filename); }
 }//class

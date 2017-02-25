@@ -10,7 +10,7 @@ import java.util.List;
  * Created by dani on 2017-02-25.
  */
 public class DrawModel {
-    private List<Shape> shapeList;
+    private List<ShapeFactory> shapeList;
     private DrawController drawController;
 
     public DrawModel(){
@@ -47,14 +47,14 @@ public class DrawModel {
      */
     public void deSerializeFromFile(String filename) throws IOException, ClassNotFoundException{
         ObjectInputStream in = null;
-        ArrayList<Shape> readObject = new ArrayList<>();
+        ArrayList<ShapeFactory> readObject = new ArrayList<>();
         shapeList = new ArrayList<>(); //tömmer listan för att hämta in en ny
         try {
             in = new ObjectInputStream(new FileInputStream(filename));
 
             // readObject returns a reference of type Object, hence the down-cast
-            readObject = (ArrayList<Shape>) in.readObject();
-            for(Shape b: readObject)
+            readObject = (ArrayList<ShapeFactory>) in.readObject();
+            for(ShapeFactory b: readObject)
                 shapeList.add(b);
         }//try
         finally {
@@ -69,24 +69,26 @@ public class DrawModel {
         drawController.drawFromReload();
     }//deSerializeFromFile
 
-    public List<Shape> getShapeList() {
+    public List<ShapeFactory> getShapeList() {
         return shapeList;
     }//getShapeList
 
-    public void setShapeList(List<Shape> shapeList) {
+    public void setShapeList(List<ShapeFactory> shapeList) {
         this.shapeList = shapeList;
     }//setShapeList
 
-    public void addShape(Shape shape){
+    public void addShape(ShapeFactory shape){
         shapeList.add(shape);
     }//addShape
 
-    public Shape getShape(int index){
+    public ShapeFactory getShape(int index){
         return shapeList.get(index);
     }//getShape
 
-    public void drawShape(Shape shape, GraphicsContext gc) {
-        shape.draw(gc);
+    public void drawShape(ShapeFactory shape, GraphicsContext gc) {
+        shape.createLine().draw(gc);
+        shape.createRectangle().draw(gc);
+        shape.createCircle().draw(gc);
     }//drawShape
 
     public void setController(DrawController drawController) {

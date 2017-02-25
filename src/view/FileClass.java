@@ -1,10 +1,13 @@
 package view;
 
+import controller.DrawController;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.DrawModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,12 +21,11 @@ public class FileClass{
     private final Alert alert = new Alert(Alert.AlertType.ERROR);
     private File file;
     private Stage stage;
-    private DrawModel drawModel;
+    private DrawController drawController;
 
-    public FileClass(Stage stage, DrawModel drawModel){
-        this.stage=stage;
-        this.drawModel=drawModel;
-    }
+    public FileClass(Stage stage){ this.stage=stage; }
+
+    public void setDrawController(DrawController drawController){ this.drawController = drawController; }
 
     public void openFile(){
         FileChooser fileChooser = new FileChooser();
@@ -38,7 +40,7 @@ public class FileClass{
             String path = file.getPath();
             fileInfoLabel.setText(path);
             try {
-                drawModel.deSerializeFromFile(file.getName());
+                drawController.deSerializeFromFile(file.getName());
             } catch (IOException | ClassNotFoundException e) {
                 showAlert("File chooser says " +e.getMessage());
                 //System.out.println("File chooser says " +e.getMessage());
@@ -49,7 +51,7 @@ public class FileClass{
     }
 
     public void saveFile() throws IOException {
-        drawModel.serializeToFile(fileOption());
+        drawController.serializeToFile(fileOption());
     }
 
 
