@@ -1,11 +1,11 @@
 package view;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -30,7 +30,8 @@ public class Main extends Application{
         BorderPane borderPane = new BorderPane();
         // Put menu bar on the top of the window
 
-        MenuBar menuBar = new MenuBar(new Menu("File"), new Menu("Edit"), new Menu("Help"));
+        //MenuBar menuBar = new MenuBar(new Menu("File"), new Menu("Edit"), new Menu("Help"));
+        MenuBar menuBar = initMenuBar(borderPane);
         borderPane.setTop(menuBar);
 
         // Create a wrapper Pane first
@@ -64,6 +65,50 @@ public class Main extends Application{
         primaryStage.setScene(scene);
         primaryStage.show();
     }//start
+
+    private MenuBar initMenuBar(BorderPane root){
+        MenuBar menuBar = new MenuBar();
+        //menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
+        root.setTop(menuBar);
+
+        // File menu - new, save, exit
+        Menu fileMenu = new Menu("File");
+        MenuItem newMenuItem = new MenuItem("New");
+        MenuItem saveMenuItem = new MenuItem("Save");
+        MenuItem exitMenuItem = new MenuItem("Exit");
+        exitMenuItem.setOnAction(actionEvent -> Platform.exit());
+        fileMenu.getItems().addAll(newMenuItem, saveMenuItem, new SeparatorMenuItem(), exitMenuItem);
+
+        Menu editMenu = new Menu("Edit");
+        CheckMenuItem htmlMenuItem = new CheckMenuItem("HTML");
+        htmlMenuItem.setSelected(true);
+        editMenu.getItems().add(htmlMenuItem);
+
+        CheckMenuItem cssMenuItem = new CheckMenuItem("CSS");
+        cssMenuItem.setSelected(true);
+        editMenu.getItems().add(cssMenuItem);
+
+        Menu aboutMenu = new Menu("About");
+        ToggleGroup tGroup = new ToggleGroup();
+        RadioMenuItem mysqlItem = new RadioMenuItem("MySQL");
+        mysqlItem.setToggleGroup(tGroup);
+
+        RadioMenuItem oracleItem = new RadioMenuItem("Oracle");
+        oracleItem.setToggleGroup(tGroup);
+        oracleItem.setSelected(true);
+
+        aboutMenu.getItems().addAll(mysqlItem, oracleItem, new SeparatorMenuItem());
+
+        Menu tutorialMenu = new Menu("Tutorial");
+        tutorialMenu.getItems().addAll(
+                new CheckMenuItem("Java"),
+                new CheckMenuItem("JavaFX"),
+                new CheckMenuItem("Swing"));
+
+        aboutMenu.getItems().add(tutorialMenu);
+        menuBar.getMenus().addAll(fileMenu, editMenu, aboutMenu);
+        return menuBar;
+    }//initMenuBar
 
     /**
      * Draw crossed red lines which each each end is at the corner of window,
