@@ -1,14 +1,15 @@
 package view;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -19,18 +20,38 @@ public class Main extends Application{
     private GraphicsContext gc;
     private int counter = 0;
     private double x1,x2,y1,y2;
-    @FXML Canvas canvas;
-    @FXML BorderPane borderPane;
+
+    public static void main(String[] args) {
+        launch(args);
+    }//main
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        borderPane = FXMLLoader.load(getClass().getResource("view.fxml"));
-        Scene scene = new Scene(borderPane, 300, 275);
-        Node node = borderPane.lookup("#canvas");
-        canvas = (Canvas) node;
-        gc = canvas.getGraphicsContext2D();
-        //borderPane.getChildren().add(canvas);
+    public void start(Stage primaryStage) throws Exception {
+        BorderPane borderPane = new BorderPane();
+        // Put menu bar on the top of the window
 
+        MenuBar menuBar = new MenuBar(new Menu("File"), new Menu("Edit"), new Menu("Help"));
+        borderPane.setTop(menuBar);
+
+        // Create a wrapper Pane first
+        Pane wrapperPane = new Pane();
+        borderPane.setCenter(wrapperPane);
+
+        // Put canvas in the center of the window
+        Canvas canvas = new Canvas();
+        wrapperPane.getChildren().add(canvas);
+        gc = canvas.getGraphicsContext2D();
+
+        // Bind the width/height property to the wrapper Pane
+        canvas.widthProperty().bind(wrapperPane.widthProperty());
+        canvas.heightProperty().bind(wrapperPane.heightProperty());
+
+        // redraw when resized
+        canvas.widthProperty().addListener(event -> draw(canvas));
+        canvas.heightProperty().addListener(event -> draw(canvas));
+        draw(canvas);
+
+        Scene scene = new Scene(borderPane, 300, 275);
         scene.setOnMouseClicked(mouseHandler);
         scene.setOnMouseDragged(mouseHandler);
         scene.setOnMouseEntered(mouseHandler);
@@ -44,10 +65,25 @@ public class Main extends Application{
         primaryStage.show();
     }//start
 
-    public static void main(String[] args){
-        //Launches the application
-        launch(args);
-    }//main
+    /**
+     * Draw crossed red lines which each each end is at the corner of window,
+     * and 4 blue circles whose each center is at the corner of the window,
+     * so that make it possible to know where is the extent the Canvas draws
+     */
+    private void draw(Canvas canvas) {
+        int width = (int) canvas.getWidth();
+        int height = (int) canvas.getHeight();
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, width, height);
+        gc.setStroke(Color.RED);
+        gc.strokeLine(0, 0, width, height);
+        gc.strokeLine(0, height, width, 0);
+        gc.setFill(Color.BLUE);
+        gc.fillOval(-30, -30, 60, 60);
+        gc.fillOval(-30 + width, -30, 60, 60);
+        gc.fillOval(-30, -30 + height, 60, 60);
+        gc.fillOval(-30 + width, -30 + height, 60, 60);
+    }//draw on resize
 
     private EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>(){
         @Override
@@ -60,12 +96,12 @@ public class Main extends Application{
                     x2 = mouseEvent.getX();
                     y2 = mouseEvent.getY();
                     draw(x1,y1,x2,y2);
-                }
+                }//if
                 else{
                     x1 = mouseEvent.getX();
                     y1 = mouseEvent.getY();
                     counter++;
-                }
+                }//else
             }//if
         }//handle
     };
@@ -75,6 +111,5 @@ public class Main extends Application{
         gc.moveTo(x1, y1);
         gc.lineTo(x2, y2);
         gc.stroke();
-    }
-
+    }//draw on mouse event
 }//class
