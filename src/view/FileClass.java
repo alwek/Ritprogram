@@ -1,9 +1,7 @@
 package view;
 
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.DrawModel;
@@ -51,15 +49,36 @@ public class FileClass{
     }
 
     public void saveFile() throws IOException {
-        drawModel.serializeToFile(getFileName());
+        drawModel.serializeToFile(fileOption());
     }
 
-    public String getFileName(){
+
+    public String fileOption() throws IOException {
         if(file == null) {
-           // return null; --> before
             System.out.println("Dialog box: "+fileInputBox());
+        }else if(file != null){
+            System.out.println("New or old: "+newOrOld());
         }
-        return file.getName();
+
+        return getFileName();
+    }
+
+    private String newOrOld() throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation file action");
+        alert.setHeaderText("Save or create new file!");
+        alert.setContentText("Do you want to save to the old file "+file.getName()+" or create a new file ?");
+        ButtonType buttonTypeOne = new ButtonType("save");
+        ButtonType buttonTypeTwo = new ButtonType("create");
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne){
+            saveFile();
+        }else {
+            return fileInputBox();
+        }
+        return null;
     }
 
     private String fileInputBox(){
@@ -69,7 +88,7 @@ public class FileClass{
         Optional<String> result = dialog.showAndWait();
         String fileName = "";
 
-        if (result.isPresent() && result.get() != null) {
+        if (result.isPresent()) {
             fileName = result.get();
             file = new File(fileName+".txt");
         }
@@ -82,4 +101,6 @@ public class FileClass{
         alert.setContentText(message);
         alert.show();
     }
+
+    public String getFileName(){ return file.getName(); }
 }
