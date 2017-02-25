@@ -6,11 +6,20 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by alica on 2017-02-17.
@@ -18,6 +27,7 @@ import javafx.stage.Stage;
  */
 public class Main extends Application{
     private GraphicsContext gc;
+    private Canvas canvas;
     private int counter = 0;
     private double x1,x2,y1,y2;
 
@@ -39,7 +49,7 @@ public class Main extends Application{
         borderPane.setCenter(wrapperPane);
 
         // Put canvas in the center of the window
-        Canvas canvas = new Canvas();
+        canvas = new Canvas();
         wrapperPane.getChildren().add(canvas);
         gc = canvas.getGraphicsContext2D();
 
@@ -77,17 +87,25 @@ public class Main extends Application{
         MenuItem saveMenuItem = new MenuItem("Save");
         MenuItem exitMenuItem = new MenuItem("Exit");
         exitMenuItem.setOnAction(actionEvent -> Platform.exit());
+        saveMenuItem.setOnAction(actionEvent -> exportImage("myImage.png"));
         fileMenu.getItems().addAll(newMenuItem, saveMenuItem, new SeparatorMenuItem(), exitMenuItem);
 
+        // edit menu - Contains drawable shapes
         Menu editMenu = new Menu("Edit");
-        CheckMenuItem htmlMenuItem = new CheckMenuItem("HTML");
-        htmlMenuItem.setSelected(true);
-        editMenu.getItems().add(htmlMenuItem);
 
-        CheckMenuItem cssMenuItem = new CheckMenuItem("CSS");
-        cssMenuItem.setSelected(true);
-        editMenu.getItems().add(cssMenuItem);
+        CheckMenuItem lineMenuItem = new CheckMenuItem("Line");
+        lineMenuItem.setSelected(true);
+        editMenu.getItems().add(lineMenuItem);
 
+        CheckMenuItem circleMenuItem = new CheckMenuItem("Circle");
+        circleMenuItem.setSelected(true);
+        editMenu.getItems().add(circleMenuItem);
+
+        CheckMenuItem rectangleMenuItem = new CheckMenuItem("Rectangle");
+        rectangleMenuItem.setSelected(true);
+        editMenu.getItems().add(rectangleMenuItem);
+
+        // About menu - information about the program
         Menu aboutMenu = new Menu("About");
         ToggleGroup tGroup = new ToggleGroup();
         RadioMenuItem mysqlItem = new RadioMenuItem("MySQL");
@@ -96,7 +114,6 @@ public class Main extends Application{
         RadioMenuItem oracleItem = new RadioMenuItem("Oracle");
         oracleItem.setToggleGroup(tGroup);
         oracleItem.setSelected(true);
-
         aboutMenu.getItems().addAll(mysqlItem, oracleItem, new SeparatorMenuItem());
 
         Menu tutorialMenu = new Menu("Tutorial");
@@ -107,8 +124,25 @@ public class Main extends Application{
 
         aboutMenu.getItems().add(tutorialMenu);
         menuBar.getMenus().addAll(fileMenu, editMenu, aboutMenu);
+
         return menuBar;
     }//initMenuBar
+
+    public void exportImage(String imageName) {
+        BufferedImage image = new BufferedImage((int) canvas.getWidth(), (int) canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = image.createGraphics();
+
+        draw(canvas);
+        try{
+            System.out.println("Exporting image: " + imageName);
+            FileOutputStream out = new FileOutputStream(imageName);
+            ImageIO.write(image, "png", out);
+            out.close();
+        }//try
+        catch (IOException e){
+            e.printStackTrace();
+        }//catch
+    }//exportImage
 
     /**
      * Draw crossed red lines which each each end is at the corner of window,
@@ -118,7 +152,7 @@ public class Main extends Application{
     private void draw(Canvas canvas) {
         int width = (int) canvas.getWidth();
         int height = (int) canvas.getHeight();
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, width, height);
         gc.setStroke(Color.RED);
         gc.strokeLine(0, 0, width, height);
@@ -140,7 +174,8 @@ public class Main extends Application{
                     counter = 0;
                     x2 = mouseEvent.getX();
                     y2 = mouseEvent.getY();
-                    draw(x1,y1,x2,y2);
+                    drawRectangle(x1,y1,x2,y2);
+                    //draw(x1,y1,x2,y2);
                 }//if
                 else{
                     x1 = mouseEvent.getX();
@@ -157,4 +192,12 @@ public class Main extends Application{
         gc.lineTo(x2, y2);
         gc.stroke();
     }//draw on mouse event
+
+    private void drawRectangle(double x1, double y1, double x2, double y2){
+        gc.beginPath();
+        gc.setStroke(Color.BLACK);
+        gc.setFill(Color.BLACK);
+        gc.rect(x1, y1, x2-x1, y2-y1);
+        gc.stroke();
+    }
 }//class
