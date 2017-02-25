@@ -1,5 +1,6 @@
 package view;
 
+import controller.DrawController;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
@@ -12,33 +13,32 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-
+import model.*;
+import model.Rectangle;
+import model.Shape;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by dani on 2017-02-25.
  */
 public class View extends BorderPane{
-
     private FileClass fileClass;
-
     private GraphicsContext gc;
     private Canvas canvas;
     private int counter = 0;
     private double x1,x2,y1,y2;
-
+    private DrawController controller;
 
     public View(FileClass fileClass){
         this.fileClass = fileClass;
         init();
-        VBox vBox = new VBox();
-        vBox.setPrefWidth(100);
-        createMenu(vBox);
-    }
+        createMenu();
+    }//View
 
     private void init(){
         Pane wrapperPane = new Pane();
@@ -66,12 +66,13 @@ public class View extends BorderPane{
         this.setOnMouseMoved(mouseHandler);
         this.setOnMousePressed(mouseHandler);
         this.setOnMouseReleased(mouseHandler);
-    }
+    }//init
 
-    private MenuBar createMenu(VBox vBox){
+    private MenuBar createMenu(){
+        VBox vBox = new VBox();
+        vBox.setPrefWidth(100);
 
         MenuBar menuBar = new MenuBar();
-        //menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
         vBox.getChildren().add(menuBar);
         this.setTop(vBox);
 
@@ -86,13 +87,12 @@ public class View extends BorderPane{
         saveMenuItem.setOnAction(arg0 -> {
             try {
                 fileClass.saveFile();
-                Platform.exit();
+                //Platform.exit();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
         });
         openFile.setOnAction(arg0 ->{ fileClass.openFile(); });
-
         fileMenu.getItems().addAll(newMenuItem, openFile ,saveMenuItem, new SeparatorMenuItem(), exitMenuItem);
 
         // edit menu - Contains drawable shapes
@@ -109,6 +109,10 @@ public class View extends BorderPane{
         CheckMenuItem rectangleMenuItem = new CheckMenuItem("Rectangle");
         rectangleMenuItem.setSelected(true);
         editMenu.getItems().add(rectangleMenuItem);
+
+        MenuItem clearMenuItem = new MenuItem("Clear");
+        clearMenuItem.setOnAction(actionEvent -> clear());
+        editMenu.getItems().add(clearMenuItem);
 
         // About menu - information about the program
         Menu aboutMenu = new Menu("About");
@@ -131,6 +135,10 @@ public class View extends BorderPane{
         menuBar.getMenus().addAll(fileMenu, editMenu, aboutMenu);
 
         return menuBar;
+    }//createMenuBar
+
+    public void setController(DrawController controller){
+        this.controller = controller;
     }
 
     private void exportImage(String imageName) {
@@ -149,12 +157,34 @@ public class View extends BorderPane{
         }//catch
     }//exportImage
 
+    private EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>(){
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            if(mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED){
+                System.out.println("Mouse pressed");
+                System.out.println("Counter: " + counter);
+                if(counter == 1){
+                    counter = 0;
+                    x2 = mouseEvent.getX();
+                    y2 = mouseEvent.getY();
+                    drawRectangle(x1,y1,x2,y2);
+                    drawLine(x1,y1,x2,y2);
+                }//if
+                else{
+                    x1 = mouseEvent.getX();
+                    y1 = mouseEvent.getY();
+                    counter++;
+                }//else
+            }//if
+        }//handle
+    };
+
     /**
      * Draw crossed red lines which each each end is at the corner of window,
      * and 4 blue circles whose each center is at the corner of the window,
      * so that make it possible to know where is the extent the Canvas draws
      */
-    private void draw(javafx.scene.canvas.Canvas canvas) {
+    private void draw(Canvas canvas) {
         int width = (int) canvas.getWidth();
         int height = (int) canvas.getHeight();
         gc = canvas.getGraphicsContext2D();
@@ -167,42 +197,38 @@ public class View extends BorderPane{
         gc.fillOval(-30 + width, -30, 60, 60);
         gc.fillOval(-30, -30 + height, 60, 60);
         gc.fillOval(-30 + width, -30 + height, 60, 60);
+        //drawFromReload();
     }//draw on resize
 
-    private EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>(){
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            if(mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED){
-                System.out.println("Mouse pressed");
-                System.out.println("Counter: " + counter);
-                if(counter == 1){
-                    counter = 0;
-                    x2 = mouseEvent.getX();
-                    y2 = mouseEvent.getY();
-                    drawRectangle(x1,y1,x2,y2);
-                    //draw(x1,y1,x2,y2);
-                }//if
-                else{
-                    x1 = mouseEvent.getX();
-                    y1 = mouseEvent.getY();
-                    counter++;
-                }//else
-            }//if
-        }//handle
-    };
-
-    private void draw(double x1, double y1, double x2, double y2){
-        gc.beginPath();
-        gc.moveTo(x1, y1);
-        gc.lineTo(x2, y2);
-        gc.stroke();
+    private void drawLine(double x1, double y1, double x2, double y2){
+        Line line = new Line(x1, x2, y1, y2);
+        controller.addShape(line);
+        controller.drawShape(line, gc);
     }//draw on mouse event
 
     private void drawRectangle(double x1, double y1, double x2, double y2){
-        gc.beginPath();
-        gc.setStroke(javafx.scene.paint.Color.BLACK);
-        gc.setFill(javafx.scene.paint.Color.BLACK);
-        gc.rect(x1, y1, x2-x1, y2-y1);
-        gc.stroke();
-    }
-}
+        Rectangle rectangle = new Rectangle(x1,x2,y1,y2);
+        controller.addShape(rectangle);
+        controller.drawShape(rectangle, gc);
+    }//draw rectangle
+
+    private void drawCircle(){
+
+    }//draw circle
+
+    public void drawFromReload(){
+        try{
+            ArrayList<Shape> list = (ArrayList<Shape>) controller.getShapeList();
+            for(Shape aList : list) {
+                aList.draw(gc);
+            }//for
+        }//try
+        catch (NullPointerException ex){
+            System.out.println("List is null");
+        }//catch
+    }//draw from a saved file
+
+    private void clear(){
+        init();
+    }//clear
+}//class

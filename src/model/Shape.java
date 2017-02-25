@@ -1,5 +1,6 @@
 package model;
 
+import javafx.scene.canvas.GraphicsContext;
 import java.io.Serializable;
 
 /**
@@ -7,5 +8,5 @@ import java.io.Serializable;
  * Good luck, Commander!
  */
 public interface Shape extends Serializable {
-    void draw();
+    void draw(GraphicsContext gc);
 }

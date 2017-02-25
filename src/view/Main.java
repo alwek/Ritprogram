@@ -25,15 +25,17 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         DrawModel model = new DrawModel();
-        DrawController drawController = new DrawController(model);
-        FileClass fileClass = new FileClass(primaryStage,model);
 
+        FileClass fileClass = new FileClass(primaryStage,model);
         View view = new View(fileClass);
+        DrawController drawController = new DrawController(model, view);
+        view.setController(drawController);
+        model.setController(drawController);
 
         Scene scene = new Scene(view, 500, 375);
         primaryStage.setTitle("Extreme Ultimate Drawing Elite Professional Tool Deluxe Edition");
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
+    }//start
 
 }//class
