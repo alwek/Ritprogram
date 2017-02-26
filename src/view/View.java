@@ -23,7 +23,7 @@ public class View extends BorderPane{
     private GraphicsContext gc;
     private Canvas canvas;
     private int counter = 0;
-    private double x1,x2,y1,y2;
+    private double x1,y1;
     private DrawController controller;
     private ShapeFactory shapeFactory;
 
@@ -50,11 +50,13 @@ public class View extends BorderPane{
 
      private void createAndDrawCanvas(){
          Pane wrapperPane = new Pane();
+
          this.setCenter(wrapperPane);
 
          // Put canvas in the center of the window
          canvas = new Canvas();
          wrapperPane.getChildren().add(canvas);
+
          gc = canvas.getGraphicsContext2D();
 
          // Bind the width/height property to the wrapper Pane
@@ -120,25 +122,7 @@ public class View extends BorderPane{
         });
         editMenu.getItems().add(clearMenuItem);
 
-        // About menu - information about the program
-        Menu aboutMenu = new Menu("About");
-        ToggleGroup tGroup = new ToggleGroup();
-        RadioMenuItem mysqlItem = new RadioMenuItem("MySQL");
-        mysqlItem.setToggleGroup(tGroup);
-
-        RadioMenuItem oracleItem = new RadioMenuItem("Oracle");
-        oracleItem.setToggleGroup(tGroup);
-        oracleItem.setSelected(true);
-        aboutMenu.getItems().addAll(mysqlItem, oracleItem, new SeparatorMenuItem());
-
-        Menu tutorialMenu = new Menu("Tutorial");
-        tutorialMenu.getItems().addAll(
-                new CheckMenuItem("Java"),
-                new CheckMenuItem("JavaFX"),
-                new CheckMenuItem("Swing"));
-
-        aboutMenu.getItems().add(tutorialMenu);
-        menuBar.getMenus().addAll(fileMenu, editMenu, aboutMenu);
+        menuBar.getMenus().addAll(fileMenu, editMenu);
 
         return menuBar;
     }//createMenuBar
@@ -151,8 +135,8 @@ public class View extends BorderPane{
                 System.out.println("Counter: " + counter);
                 if(counter == 1){
                     counter = 0;
-                    x2 = mouseEvent.getX();
-                    y2 = mouseEvent.getY();
+                    double x2 = mouseEvent.getX();
+                    double y2 = mouseEvent.getY();
 
                     shapeFactory = new ShapeFactoryImpl(new StraightLine(x1,x2,y1,y2), new StraightRectangle(x1,x2,y1,y2), new StraightCircle(x1,x2,y1,y2));
                     controller.addShape(shapeFactory);
@@ -188,6 +172,7 @@ public class View extends BorderPane{
         gc.fillOval(-30 + width, -30 + height, 60, 60);
         //drawFromReload();
     }//draw on resize
+
 
     public void drawFromReload(){
         try{

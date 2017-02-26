@@ -21,6 +21,7 @@ public class Main extends Application{
         DrawModel model = new DrawModel();
 
         FileClass fileClass = new FileClass(primaryStage);
+
         View view = new View(fileClass);
         DrawController drawController = new DrawController(model, view);
         view.setController(drawController);
@@ -32,5 +33,4 @@ public class Main extends Application{
         primaryStage.setScene(scene);
         primaryStage.show();
     }//start
-
 }//class
