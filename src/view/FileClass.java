@@ -2,10 +2,7 @@ package view;
 
 import controller.DrawController;
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -61,24 +58,29 @@ public class FileClass{
         }else if(file != null){
             System.out.println("New or old: "+newOrOld());
         }
-
         return getFileName();
     }
 
     private String newOrOld() throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation file action");
-        alert.setHeaderText("Save or create new file!");
-        alert.setContentText("Do you want to save to the old file "+file.getName()+" or create a new file ?");
+        Alert conf = new Alert(Alert.AlertType.CONFIRMATION);
+
+        conf.setTitle("Confirmation file action");
+        conf.setHeaderText("Save or create new file!");
+        conf.setContentText("Do you want to save to the old file "+file.getName()+" or create a new file ?");
         ButtonType buttonTypeOne = new ButtonType("save");
         ButtonType buttonTypeTwo = new ButtonType("create");
-        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+        conf.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == buttonTypeOne){
-            saveFile();
-        }else {
-            return fileInputBox();
+        Optional<ButtonType> result = conf.showAndWait();
+
+        if(result.isPresent()) {
+            if (result.get() == buttonTypeTwo) {
+                System.out.println("SECOND");
+                return fileInputBox();
+            } else {
+                System.out.println("NONE");
+                return file.getName();
+            }
         }
         return null;
     }
@@ -87,12 +89,15 @@ public class FileClass{
        TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("File name input");
         dialog.setHeaderText("Enter the file name:");
+
         Optional<String> result = dialog.showAndWait();
+
         String fileName = "";
 
         if (result.isPresent()) {
             fileName = result.get();
             file = new File(fileName+".txt");
+            return file.getName();
         }
         return file.getName();
     }
