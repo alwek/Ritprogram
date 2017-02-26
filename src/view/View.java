@@ -55,6 +55,7 @@ public class View extends BorderPane{
 
          // Put canvas in the center of the window
          canvas = new Canvas();
+
          wrapperPane.getChildren().add(canvas);
 
          gc = canvas.getGraphicsContext2D();
@@ -62,7 +63,7 @@ public class View extends BorderPane{
          // Bind the width/height property to the wrapper Pane
          canvas.widthProperty().bind(wrapperPane.widthProperty());
          canvas.heightProperty().bind(wrapperPane.heightProperty());
-
+         System.out.println("boolean resizible: "+canvas.isResizable());
          // redraw when resized
          canvas.widthProperty().addListener(event -> draw(canvas));
          canvas.heightProperty().addListener(event -> draw(canvas));
@@ -160,6 +161,7 @@ public class View extends BorderPane{
     private void draw(Canvas canvas) {
         int width = (int) canvas.getWidth();
         int height = (int) canvas.getHeight();
+
         gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, width, height);
         gc.setStroke(javafx.scene.paint.Color.RED);

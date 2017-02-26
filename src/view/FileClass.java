@@ -2,7 +2,10 @@ package view;
 
 import controller.DrawController;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -30,7 +33,7 @@ public class FileClass{
         Label fileInfoLabel = new Label("No file selected yet");
         fileInfoLabel.setPadding(new Insets(5, 5, 5, 5));
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        //fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Files", "*.file"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text", "*.txt"));
 
         file = fileChooser.showOpenDialog(stage);
         if (file != null){
