@@ -27,4 +27,6 @@ public class StraightRectangle extends Rectangle {
         gc.stroke();
     }
 
+    @Override
+    public void update(GraphicsContext gc) { draw(gc); }
 }

@@ -23,4 +23,7 @@ public class StraightLine extends Line{
         gc.lineTo(super.getX2(), super.getY2());
         gc.stroke();
     }
+
+    @Override
+    public void update(GraphicsContext gc) { draw(gc); }
 }

@@ -38,24 +38,7 @@ public class View extends BorderPane{
     }
 
     private void init(){
-        Pane wrapperPane = new Pane();
-        this.setCenter(wrapperPane);
-
-        // Put canvas in the center of the window
-        canvas = new Canvas();
-        wrapperPane.getChildren().add(canvas);
-        gc = canvas.getGraphicsContext2D();
-
-        // Bind the width/height property to the wrapper Pane
-        canvas.widthProperty().bind(wrapperPane.widthProperty());
-        canvas.heightProperty().bind(wrapperPane.heightProperty());
-
-        // redraw when resized
-        canvas.widthProperty().addListener(event -> draw(canvas));
-        canvas.heightProperty().addListener(event -> draw(canvas));
-        draw(canvas);
-
-        //Scene scene = new Scene(this, 300, 275);
+        createAndDrawCanvas();
         this.setOnMouseClicked(mouseHandler);
         this.setOnMouseDragged(mouseHandler);
         this.setOnMouseEntered(mouseHandler);
@@ -64,6 +47,25 @@ public class View extends BorderPane{
         this.setOnMousePressed(mouseHandler);
         this.setOnMouseReleased(mouseHandler);
     }//init
+
+     private void createAndDrawCanvas(){
+         Pane wrapperPane = new Pane();
+         this.setCenter(wrapperPane);
+
+         // Put canvas in the center of the window
+         canvas = new Canvas();
+         wrapperPane.getChildren().add(canvas);
+         gc = canvas.getGraphicsContext2D();
+
+         // Bind the width/height property to the wrapper Pane
+         canvas.widthProperty().bind(wrapperPane.widthProperty());
+         canvas.heightProperty().bind(wrapperPane.heightProperty());
+
+         // redraw when resized
+         canvas.widthProperty().addListener(event -> draw(canvas));
+         canvas.heightProperty().addListener(event -> draw(canvas));
+         draw(canvas);
+     }
 
     private MenuBar createMenu(){
         VBox vBox = new VBox();
@@ -80,6 +82,10 @@ public class View extends BorderPane{
         MenuItem saveMenuItem = new MenuItem("Save");
         MenuItem exitMenuItem = new MenuItem("Exit");
 
+        newMenuItem.setOnAction(actionEvent ->{
+            clearCanvas();
+            controller.clearShapeList();
+        });
         exitMenuItem.setOnAction(actionEvent -> Platform.exit());
         saveMenuItem.setOnAction(arg0 -> {
             try {
@@ -108,7 +114,10 @@ public class View extends BorderPane{
         editMenu.getItems().add(rectangleMenuItem);
 
         MenuItem clearMenuItem = new MenuItem("Clear");
-        clearMenuItem.setOnAction(actionEvent -> clear());
+        clearMenuItem.setOnAction(actionEvent -> {
+            clearCanvas();
+            controller.clearShapeList();
+        });
         editMenu.getItems().add(clearMenuItem);
 
         // About menu - information about the program
@@ -144,13 +153,11 @@ public class View extends BorderPane{
                     counter = 0;
                     x2 = mouseEvent.getX();
                     y2 = mouseEvent.getY();
-                    // ny kod --> factory...
+
                     shapeFactory = new ShapeFactoryImpl(new StraightLine(x1,x2,y1,y2), new StraightRectangle(x1,x2,y1,y2), new StraightCircle(x1,x2,y1,y2));
                     controller.addShape(shapeFactory);
                     controller.drawShape(shapeFactory, gc);
 
-                    //   drawRectangle(x1,y1,x2,y2);
-                    //   drawLine(x1,y1,x2,y2);
                 }//if
                 else{
                     x1 = mouseEvent.getX();
@@ -182,27 +189,9 @@ public class View extends BorderPane{
         //drawFromReload();
     }//draw on resize
 
-    private void drawLine(double x1, double y1, double x2, double y2){
-    //    Line line = new Line(x1, x2, y1, y2);
-    // controller.addShape(line);
-    //    controller.drawShape(line, gc);
-
-        controller.addShape(shapeFactory);
-        controller.drawShape(shapeFactory, gc);
-    }//draw on mouse event
-
-    private void drawRectangle(double x1, double y1, double x2, double y2){
-     //   Rectangle rectangle = new Rectangle(x1,x2,y1,y2);
-     //   controller.addShape(rectangle);
-     //   controller.drawShape(rectangle, gc);
-    }//draw rectangle
-
-    private void drawCircle(){
-
-    }//draw circle
-
     public void drawFromReload(){
         try{
+            clearCanvas();
             ArrayList<ShapeFactory> list = (ArrayList<ShapeFactory>) controller.getShapeList();
             for(ShapeFactory aList : list) {
                 aList.createLine().draw(gc);
@@ -214,7 +203,5 @@ public class View extends BorderPane{
         }//catch
     }//draw from a saved file
 
-    private void clear(){
-        init();
-    }//clear
+    private void clearCanvas(){ gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); }//clear
 }//class

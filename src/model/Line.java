@@ -6,7 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
  * Created by alica on 2017-02-17.
  * Good luck, Commander!
  */
-public abstract class Line extends Prototype{
+public abstract class Line extends Prototype implements DrawObserver{
 
     private double x1,x2,y1,y2;
 

@@ -73,17 +73,11 @@ public class DrawModel {
         return shapeList;
     }//getShapeList
 
-    public void setShapeList(List<ShapeFactory> shapeList) {
-        this.shapeList = shapeList;
-    }//setShapeList
+    public void clearShapeList(){ shapeList.clear(); }
 
     public void addShape(ShapeFactory shape){
         shapeList.add(shape);
     }//addShape
-
-    public ShapeFactory getShape(int index){
-        return shapeList.get(index);
-    }//getShape
 
     public void drawShape(ShapeFactory shape, GraphicsContext gc) {
         shape.createLine().draw(gc);

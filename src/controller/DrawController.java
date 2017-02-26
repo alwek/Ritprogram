@@ -21,9 +21,7 @@ public class DrawController {
         this.view = view;
     }//DrawController
 
-    public void setShapeList(List<ShapeFactory> shapesList){
-        drawModel.setShapeList(shapesList);
-    }
+    public void clearShapeList(){ drawModel.clearShapeList(); }
 
     public List<ShapeFactory> getShapeList(){
         return drawModel.getShapeList();
@@ -31,10 +29,6 @@ public class DrawController {
 
     public void addShape(ShapeFactory shape){
         drawModel.addShape(shape);
-    }
-
-    public ShapeFactory getShape(int index){
-        return drawModel.getShape(index);
     }
 
     public void drawShape(ShapeFactory shape, GraphicsContext gc){
