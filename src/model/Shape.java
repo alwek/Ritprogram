@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.io.Serializable;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
 public abstract class Shape extends Prototype implements DrawObserver, Serializable{
 
     private double x1,x2,y1,y2;
+    private Color color;
 
     protected Shape(double x1, double x2, double y1, double y2){
         this.x1=x1;

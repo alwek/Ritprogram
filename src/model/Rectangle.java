@@ -8,10 +8,10 @@ import javafx.scene.paint.Color;
  * Good luck, Commander!
  */
 
-public class Rectangle extends Shape{
+public class Rectangle extends FillableShape{
 
-    public Rectangle(double x1, double x2, double y1, double y2) {
-        super(x1, x2, y1, y2);
+    public Rectangle(double x1, double x2, double y1, double y2, boolean filled) {
+        super(x1, x2, y1, y2, filled);
     }
 
     @Override
@@ -19,7 +19,7 @@ public class Rectangle extends Shape{
 
     @Override
     public Rectangle clone() throws CloneNotSupportedException {
-        return new Rectangle(super.getX1(), super.getX2(), super.getY1(),super.getY2());
+        return new Rectangle(super.getX1(), super.getX2(), super.getY1(),super.getY2(), super.isFilled());
     }
 
     @Override

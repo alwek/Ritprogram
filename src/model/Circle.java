@@ -6,13 +6,13 @@ import javafx.scene.canvas.GraphicsContext;
  * Created by alica on 2017-02-17.
  * Good luck, Commander!
  */
-public class Circle extends Shape{
+public class Circle extends FillableShape{
 
-    private double radius;
+    private double diameter;
 
-    public Circle(double x1, double x2, double y1, double y2, double radius){
-        super(x1,x2,y1,y2);
-        this.radius = radius;
+    public Circle(double x1, double x2, double y1, double y2, double diameter, boolean filled){
+        super(x1,x2,y1,y2, filled);
+        this.diameter = diameter;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class Circle extends Shape{
 
     @Override
     public Circle clone() throws CloneNotSupportedException {
-        return new Circle(super.getX1(),super.getX2(),super.getY1(),super.getY2(), radius);
+        return new Circle(super.getX1(),super.getX2(),super.getY1(),super.getY2(), diameter, super.isFilled());
     }
 
     @Override
@@ -31,7 +31,7 @@ public class Circle extends Shape{
         gc.stroke();
     }
 
-    public double getRadius() { return radius; }
+    public double getDiameter() { return diameter; }
 
-    public void setRadius(double radius) { this.radius = radius; }
+    public void setDiameter(double radius) { this.diameter = radius; }
 }

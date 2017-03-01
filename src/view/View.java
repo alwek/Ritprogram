@@ -87,7 +87,6 @@ public class View extends BorderPane{
 
         newMenuItem.setOnAction(actionEvent ->{
             clearCanvas();
-        //    controller.clearShapeList();
             controller.clearObserversList();
         });
         exitMenuItem.setOnAction(actionEvent -> Platform.exit());
@@ -120,7 +119,6 @@ public class View extends BorderPane{
         MenuItem clearMenuItem = new MenuItem("Clear");
         clearMenuItem.setOnAction(actionEvent -> {
             clearCanvas();
-         //   controller.clearShapeList();
             controller.clearObserversList();
         });
         editMenu.getItems().add(clearMenuItem);
@@ -141,7 +139,7 @@ public class View extends BorderPane{
                     double x2 = mouseEvent.getX();
                     double y2 = mouseEvent.getY();
 
-                    shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2), new Rectangle(x1,x2,y1,y2), new Circle(x1,x2,y1,y2,0));
+                    shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2), new Rectangle(x1,x2,y1,y2, true), new Circle(x1,x2,y1,y2,0, false));
                     controller.addShape(shapeFactory, gc);
                 //    controller.drawShape(shapeFactory, gc);
 
