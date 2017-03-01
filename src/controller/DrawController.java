@@ -2,6 +2,7 @@ package controller;
 
 import javafx.scene.canvas.GraphicsContext;
 import model.DrawModel;
+import model.DrawObserver;
 import model.ShapeFactory;
 import view.View;
 
@@ -21,18 +22,12 @@ public class DrawController {
         this.view = view;
     }//DrawController
 
-    public void clearShapeList(){ drawModel.clearShapeList(); }
+    public void clearObserversList(){ drawModel.clearObservers(); }
 
-    public List<ShapeFactory> getShapeList(){
-        return drawModel.getShapeList();
-    }
+    public List<DrawObserver> getObservers(){ return drawModel.getObservers(); }
 
-    public void addShape(ShapeFactory shape){
-        drawModel.addShape(shape);
-    }
-
-    public void drawShape(ShapeFactory shape, GraphicsContext gc){
-        drawModel.drawShape(shape, gc);
+    public void addShape(ShapeFactory shape, GraphicsContext gc){
+        drawModel.addShape(shape, gc);
     }
 
     public void drawFromReload(){
