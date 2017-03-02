@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * Created by alica on 2017-02-17.
@@ -26,8 +27,31 @@ public class Circle extends FillableShape{
     @Override
     public void draw(GraphicsContext gc) {
         gc.beginPath();
-        gc.moveTo(super.getX1(), super.getY1());
-        gc.lineTo(super.getX2(), super.getY2());
+        gc.setStroke(Color.BLACK);
+        gc.setFill(Color.BLACK);
+        gc.setLineWidth(10);
+
+        double maxValueX, maxValueY;
+        double minValueX, minValueY;
+        if(super.getX1() > super.getX2()){
+            maxValueX = super.getX1();
+            minValueX = super.getX2();
+        }
+        else{
+            maxValueX = super.getX2();
+            minValueX = super.getX1();
+        }
+
+        if(super.getY1() > super.getY2()){
+            maxValueY = super.getY1();
+            minValueY = super.getY2();
+        }
+        else{
+            maxValueY = super.getY2();
+            minValueY = super.getY1();
+        }
+
+        gc.strokeOval(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
         gc.stroke();
     }
 

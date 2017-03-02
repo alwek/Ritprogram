@@ -75,13 +75,25 @@ public class DrawModel {
 
     public void clearObservers(){ observers.clear(); }
 
-    public void addShape(ShapeFactory shape, GraphicsContext gc){
+    public void addShape(ShapeFactory shape, GraphicsContext gc, String selectedShape){
+        if(selectedShape.equals("circle"))
+            observers.add(shape.createCircle());
+        else if(selectedShape.equals("line"))
+            observers.add(shape.createLine());
+        else if(selectedShape.equals("rectangle"))
+            observers.add(shape.createRectangle());
 
-        observers.add(shape.createCircle());
-        observers.add(shape.createLine());
-        observers.add(shape.createRectangle());
         notifyObservers(gc);
     }//addShape
+
+    public void removeShape(int index){
+
+    }
+
+    public void removeLatestShape(GraphicsContext gc){
+        observers.remove(observers.size()-1);
+        notifyObservers(gc);
+    }
 
     public void setController(DrawController drawController) {
         this.drawController = drawController;

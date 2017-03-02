@@ -26,6 +26,7 @@ public class View extends BorderPane{
     private double x1,y1;
     private DrawController controller;
     private ShapeFactory shapeFactory;
+    private String selectedShape;
 
     public View(FileClass fileClass){
         this.fileClass = fileClass;
@@ -107,14 +108,34 @@ public class View extends BorderPane{
         CheckMenuItem lineMenuItem = new CheckMenuItem("Line");
         lineMenuItem.setSelected(true);
         editMenu.getItems().add(lineMenuItem);
+        selectedShape = "line";
 
         CheckMenuItem circleMenuItem = new CheckMenuItem("Circle");
-        circleMenuItem.setSelected(true);
+        //circleMenuItem.setSelected(true);
         editMenu.getItems().add(circleMenuItem);
 
         CheckMenuItem rectangleMenuItem = new CheckMenuItem("Rectangle");
-        rectangleMenuItem.setSelected(true);
+        rectangleMenuItem.setOnAction(actionEvent -> {
+            lineMenuItem.setSelected(false);
+            circleMenuItem.setSelected(false);
+            rectangleMenuItem.setSelected(true);
+            selectedShape = "rectangle";
+        });
+        lineMenuItem.setOnAction(actionEvent -> {
+            lineMenuItem.setSelected(true);
+            circleMenuItem.setSelected(false);
+            rectangleMenuItem.setSelected(false);
+            selectedShape = "line";
+        });
+        circleMenuItem.setOnAction(actionEvent -> {
+            lineMenuItem.setSelected(false);
+            circleMenuItem.setSelected(true);
+            rectangleMenuItem.setSelected(false);
+            selectedShape = "circle";
+        });
+        //rectangleMenuItem.setSelected(true);
         editMenu.getItems().add(rectangleMenuItem);
+        editMenu.getItems().add(new SeparatorMenuItem());
 
         MenuItem clearMenuItem = new MenuItem("Clear");
         clearMenuItem.setOnAction(actionEvent -> {
@@ -122,6 +143,13 @@ public class View extends BorderPane{
             controller.clearObserversList();
         });
         editMenu.getItems().add(clearMenuItem);
+
+        MenuItem undoMenuItem = new MenuItem("Undo");
+        undoMenuItem.setOnAction(actionEvent -> {
+            System.out.println("Undoing latest shape");
+            controller.removeLatestShape(gc);
+        });
+        editMenu.getItems().add(undoMenuItem);
 
         menuBar.getMenus().addAll(fileMenu, editMenu);
 
@@ -140,7 +168,7 @@ public class View extends BorderPane{
                     double y2 = mouseEvent.getY();
 
                     shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2), new Rectangle(x1,x2,y1,y2, true), new Circle(x1,x2,y1,y2,0, false));
-                    controller.addShape(shapeFactory, gc);
+                    controller.addShape(shapeFactory, gc, selectedShape);
                 //    controller.drawShape(shapeFactory, gc);
 
                 }//if

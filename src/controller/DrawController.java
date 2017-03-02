@@ -26,8 +26,16 @@ public class DrawController {
 
     public List<DrawObserver> getObservers(){ return drawModel.getObservers(); }
 
-    public void addShape(ShapeFactory shape, GraphicsContext gc){
-        drawModel.addShape(shape, gc);
+    public void addShape(ShapeFactory shape, GraphicsContext gc, String selectedShape){
+        drawModel.addShape(shape, gc, selectedShape);
+    }
+
+    public void removeShape(int index){
+        drawModel.removeShape(index);
+    }
+
+    public void removeLatestShape(GraphicsContext gc){
+        drawModel.removeLatestShape(gc);
     }
 
     public void drawFromReload(){
