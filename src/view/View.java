@@ -171,7 +171,7 @@ public class View extends BorderPane{
                     counter = 0;
                     double x2 = mouseEvent.getX();
                     double y2 = mouseEvent.getY();
-                    ShapeFactory shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2, Color.BLACK), new Rectangle(x1,x2,y1,y2, true, Color.RED), new Circle(x1,x2,y1,y2,0, false,Color.BLACK));
+                    ShapeFactory shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2, Color.BLACK,0), new Rectangle(x1,x2,y1,y2, true, Color.RED,0), new Circle(x1,x2,y1,y2,0, false,Color.BLACK,0));
                     controller.addShape(shapeFactory, gc, selectedShape);
                 }//if
                 else{

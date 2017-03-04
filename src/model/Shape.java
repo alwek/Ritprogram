@@ -14,14 +14,17 @@ import java.io.Serializable;
 public abstract class Shape extends Prototype implements DrawObserver, Serializable{
 
     private double x1,x2,y1,y2;
+    // serialize color
     transient private Color color;
+    private double lineWidth;
 
-    protected Shape(double x1, double x2, double y1, double y2, Color color){
+    protected Shape(double x1, double x2, double y1, double y2, Color color, double lineWidth){
         this.x1=x1;
         this.x2 = x2;
         this.y1 = y1;
         this.y2 = y2;
         this.color = color;
+        this.lineWidth = lineWidth;
     }
 
     @Override
@@ -67,4 +70,8 @@ public abstract class Shape extends Prototype implements DrawObserver, Serializa
     public Color getColor() { return color; }
 
     public void setColor(Color color) { this.color = color; }
+
+    public double getLineWidth() { return lineWidth; }
+
+    public void setLineWidth(double lineWidth) { this.lineWidth = lineWidth; }
 }

@@ -9,8 +9,8 @@ abstract public class FillableShape extends Shape{
 
     private boolean filled;
 
-    protected FillableShape(double x1, double x2, double y1, double y2, boolean filled, Color color) {
-        super(x1, x2, y1, y2,color);
+    protected FillableShape(double x1, double x2, double y1, double y2, boolean filled, Color color, double lineWidth) {
+        super(x1, x2, y1, y2,color,lineWidth);
         this.filled = filled;
     }
 

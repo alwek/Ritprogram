@@ -10,8 +10,8 @@ import javafx.scene.paint.Color;
 
 public class Line extends Shape{
 
-    public Line(double x1, double x2, double y1, double y2, Color color) {
-        super(x1, x2, y1, y2, color);
+    public Line(double x1, double x2, double y1, double y2, Color color, double lineWidth) {
+        super(x1, x2, y1, y2, color, lineWidth);
     }
 
     @Override
@@ -19,12 +19,14 @@ public class Line extends Shape{
 
     @Override
     public Line clone() throws CloneNotSupportedException {
-        return new Line(super.getX1(), super.getX2(), super.getY1(), super.getY2(), super.getColor());
+        return new Line(super.getX1(), super.getX2(), super.getY1(), super.getY2(), super.getColor(),super.getLineWidth());
     }
 
     @Override
     public void draw(GraphicsContext gc) {
         gc.beginPath();
+        gc.setStroke(super.getColor());
+        gc.setLineWidth(super.getLineWidth());
         gc.moveTo(super.getX1(), super.getY1());
         gc.lineTo(super.getX2(), super.getY2());
         gc.stroke();

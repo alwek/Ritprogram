@@ -81,15 +81,17 @@ public class DrawModel {
     public void clearObservers(){ observers.clear(); }
 
     public void addShape(ShapeFactory shape, GraphicsContext gc, String selectedShape){
-        if(selectedShape.equals("circle"))
+        if(selectedShape.equals("circle")) {
             observers.add(shape.createCircle());
-        else if(selectedShape.equals("line"))
+        }
+        else if(selectedShape.equals("line")) {
             observers.add(shape.createLine());
-        else if(selectedShape.equals("rectangle"))
+        }
+        else if(selectedShape.equals("rectangle")) {
             observers.add(shape.createRectangle());
-
-        undoStack.clear();
+        }
         notifyObservers(gc);
+        undoStack.clear();
     }//addShape
 
     public void undo(GraphicsContext gc){
