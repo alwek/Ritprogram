@@ -22,21 +22,23 @@ public class Rectangle extends FillableShape{
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.beginPath();
+        double maxValueX, maxValueY;
+        double minValueX, minValueY;
+
         gc.setLineWidth(super.getLineWidth());
         gc.setStroke(super.getColor());
-        gc.setFill(super.getColor());
 
-        gc.rect(super.getX1(), super.getY1(), super.getX2() - super.getX1(), super.getY2() - super.getY1());
-        gc.stroke();
-     /*   if(!super.isFilled()) {
-            System.out.println("DRAWING UNFILLED RECTANGLE");
-            gc.strokeRect(super.getX1(), super.getY1(), super.getX2() - super.getX1(), super.getY2() - super.getY1());
-            gc.stroke();
+        if(super.getX1() > super.getX2()){ maxValueX = super.getX1(); minValueX = super.getX2(); }
+        else{ maxValueX = super.getX2(); minValueX = super.getX1(); }
+
+        if(super.getY1() > super.getY2()){ maxValueY = super.getY1(); minValueY = super.getY2(); }
+        else{ maxValueY = super.getY2(); minValueY = super.getY1(); }
+
+        if(!super.isFilled())
+            gc.strokeRect(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
+        else {
+            gc.setFill(super.getColor());
+            gc.fillRect(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
         }
-        else{
-            gc.fillRect(super.getX1(), super.getY1(), super.getX2()-super.getX1(),super.getY2()-super.getY1());
-            gc.stroke();
-        }*/
     }
 }

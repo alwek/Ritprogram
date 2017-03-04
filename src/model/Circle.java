@@ -26,16 +26,15 @@ public class Circle extends FillableShape{
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.beginPath();
-        gc.setStroke(super.getColor());
-        gc.setLineWidth(super.getLineWidth());
         double maxValueX, maxValueY;
         double minValueX, minValueY;
+
+        gc.setStroke(super.getColor());
+        gc.setLineWidth(super.getLineWidth());
         if(super.getX1() > super.getX2()){
             maxValueX = super.getX1();
             minValueX = super.getX2();
-        }
-        else{
+        }else{
             maxValueX = super.getX2();
             minValueX = super.getX1();
         }
@@ -43,8 +42,7 @@ public class Circle extends FillableShape{
         if(super.getY1() > super.getY2()){
             maxValueY = super.getY1();
             minValueY = super.getY2();
-        }
-        else{
+        }else{
             maxValueY = super.getY2();
             minValueY = super.getY1();
         }
@@ -55,7 +53,6 @@ public class Circle extends FillableShape{
             gc.setFill(super.getColor());
             gc.fillOval(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
         }
-        gc.stroke();
     }
 
     public double getDiameter() { return diameter; }
