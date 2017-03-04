@@ -34,9 +34,7 @@ public class View extends BorderPane{
         createMenu();
     }//View
 
-    public void setController(DrawController controller){
-        this.controller = controller;
-    }
+    public void setController(DrawController controller){ this.controller = controller; }
 
     private void init(){
         createAndDrawCanvas();
@@ -193,17 +191,8 @@ public class View extends BorderPane{
     private void draw(Canvas canvas) {
         int width = (int) canvas.getWidth();
         int height = (int) canvas.getHeight();
-
         gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, width, height);
-        gc.setStroke(javafx.scene.paint.Color.RED);
-        gc.strokeLine(0, 0, width, height);
-        gc.strokeLine(0, height, width, 0);
-        gc.setFill(javafx.scene.paint.Color.BLUE);
-        gc.fillOval(-30, -30, 60, 60);
-        gc.fillOval(-30 + width, -30, 60, 60);
-        gc.fillOval(-30, -30 + height, 60, 60);
-        gc.fillOval(-30 + width, -30 + height, 60, 60);
         drawFromReload();
     }//draw on resize
 

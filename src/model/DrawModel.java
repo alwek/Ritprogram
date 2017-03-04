@@ -15,10 +15,12 @@ public class DrawModel {
     private List<Shape> observers;
     private DrawController drawController;
     private Stack<Shape> undoStack;
+    private boolean undoFlag;
 
     public DrawModel(){
         observers = new ArrayList<>();
         undoStack = new Stack<>();
+        undoFlag = false;
     }//DrawModel
 
     /**
@@ -74,7 +76,6 @@ public class DrawModel {
         drawController.drawFromReload();
     }//deSerializeFromFile
 
-
     public List<Shape> getObservers(){
         return observers;
     }
@@ -89,6 +90,7 @@ public class DrawModel {
         else if(selectedShape.equals("rectangle"))
             observers.add(shape.createRectangle());
 
+        undoStack.clear();
         notifyObservers(gc);
     }//addShape
 
@@ -102,6 +104,7 @@ public class DrawModel {
 
     public void redo(GraphicsContext gc){
         if(undoStack.size() > 0){
+            System.out.println("UNDO FLAG SET, REDOING...");
             observers.add(undoStack.pop());
             notifyObservers(gc);
         }
