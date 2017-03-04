@@ -26,7 +26,17 @@ public class Rectangle extends FillableShape{
         gc.setLineWidth(super.getLineWidth());
         gc.setStroke(super.getColor());
         gc.setFill(super.getColor());
-        gc.rect(super.getX1(), super.getY1(), super.getX2()-super.getX1(),super.getY2()-super.getY1());
+
+        gc.rect(super.getX1(), super.getY1(), super.getX2() - super.getX1(), super.getY2() - super.getY1());
         gc.stroke();
+     /*   if(!super.isFilled()) {
+            System.out.println("DRAWING UNFILLED RECTANGLE");
+            gc.strokeRect(super.getX1(), super.getY1(), super.getX2() - super.getX1(), super.getY2() - super.getY1());
+            gc.stroke();
+        }
+        else{
+            gc.fillRect(super.getX1(), super.getY1(), super.getX2()-super.getX1(),super.getY2()-super.getY1());
+            gc.stroke();
+        }*/
     }
 }

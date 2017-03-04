@@ -49,7 +49,12 @@ public class Circle extends FillableShape{
             minValueY = super.getY1();
         }
 
-        gc.strokeOval(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
+        if(!super.isFilled())
+            gc.strokeOval(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
+        else{
+            gc.setFill(super.getColor());
+            gc.fillOval(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
+        }
         gc.stroke();
     }
 
