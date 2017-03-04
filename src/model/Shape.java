@@ -3,6 +3,9 @@ package model;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
@@ -11,7 +14,7 @@ import java.io.Serializable;
 public abstract class Shape extends Prototype implements DrawObserver, Serializable{
 
     private double x1,x2,y1,y2;
-    private Color color;
+    transient private Color color;
 
     protected Shape(double x1, double x2, double y1, double y2, Color color){
         this.x1=x1;
@@ -25,6 +28,25 @@ public abstract class Shape extends Prototype implements DrawObserver, Serializa
     public abstract Shape clone() throws CloneNotSupportedException;
 
     public abstract void draw(GraphicsContext gc);
+
+    // serialize color object --> källa: stackOverflow
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        s.defaultWriteObject();
+        s.writeDouble(color.getRed());
+        s.writeDouble(color.getGreen());
+        s.writeDouble(color.getBlue());
+        s.writeDouble(color.getOpacity());
+    }
+
+    // serialize color object --> källa: stackOverflow
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+        s.defaultReadObject();
+        double red = s.readDouble();
+        double green = s.readDouble();
+        double blue = s.readDouble();
+        double opacity = s.readDouble();
+        color = Color.color(red, green, blue, opacity);
+    }
 
     public double getX1() { return x1; }
 

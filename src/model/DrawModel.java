@@ -15,12 +15,10 @@ public class DrawModel {
     private List<Shape> observers;
     private DrawController drawController;
     private Stack<Shape> undoStack;
-    private boolean undoFlag;
 
     public DrawModel(){
         observers = new ArrayList<>();
         undoStack = new Stack<>();
-        undoFlag = false;
     }//DrawModel
 
     /**
