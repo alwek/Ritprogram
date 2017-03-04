@@ -25,7 +25,6 @@ public class View extends BorderPane{
     private int counter = 0;
     private double x1,y1;
     private DrawController controller;
-    private ShapeFactory shapeFactory;
     private String selectedShape;
 
     public View(FileClass fileClass){
@@ -147,12 +146,19 @@ public class View extends BorderPane{
         MenuItem undoMenuItem = new MenuItem("Undo");
         undoMenuItem.setOnAction(actionEvent -> {
             System.out.println("Undoing latest shape");
+            clearCanvas();
             controller.removeLatestShape(gc);
         });
+
+        MenuItem redoMenuItem = new MenuItem("Redo");
+        redoMenuItem.setOnAction(actionEvent ->{
+            System.out.println("Redoing latest shape");
+            controller.redo(gc);
+        });
+
         editMenu.getItems().add(undoMenuItem);
-
+        editMenu.getItems().add(redoMenuItem);
         menuBar.getMenus().addAll(fileMenu, editMenu);
-
         return menuBar;
     }//createMenuBar
 
@@ -167,10 +173,8 @@ public class View extends BorderPane{
                     double x2 = mouseEvent.getX();
                     double y2 = mouseEvent.getY();
 
-                    shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2), new Rectangle(x1,x2,y1,y2, true), new Circle(x1,x2,y1,y2,0, false));
+                    ShapeFactory shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2), new Rectangle(x1,x2,y1,y2, true), new Circle(x1,x2,y1,y2,0, false));
                     controller.addShape(shapeFactory, gc, selectedShape);
-                //    controller.drawShape(shapeFactory, gc);
-
                 }//if
                 else{
                     x1 = mouseEvent.getX();
@@ -205,7 +209,7 @@ public class View extends BorderPane{
 
     public void drawFromReload(){
         try{
-            ArrayList<DrawObserver> list = (ArrayList<DrawObserver>) controller.getObservers();
+            ArrayList<Shape> list = (ArrayList<Shape>) controller.getObservers();
             if(list.size() > 0)
                 clearCanvas();
             for(DrawObserver aList : list) {

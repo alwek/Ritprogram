@@ -2,18 +2,24 @@ package model;
 
 import controller.DrawController;
 import javafx.scene.canvas.GraphicsContext;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by dani on 2017-02-25.
  */
 public class DrawModel {
-    private List<DrawObserver> observers;
+    private List<Shape> observers;
     private DrawController drawController;
+    private Stack<Shape> undoStack;
 
-    public DrawModel(){ observers = new ArrayList<>(); }//DrawModel
+    public DrawModel(){
+        observers = new ArrayList<>();
+        undoStack = new Stack<>();
+    }//DrawModel
 
     /**
      * saves all the information to the file path
@@ -46,13 +52,13 @@ public class DrawModel {
      */
     public void deSerializeFromFile(String filename) throws IOException, ClassNotFoundException{
         ObjectInputStream in = null;
-        ArrayList<DrawObserver> readObject = new ArrayList<>();
+        ArrayList<Shape> readObject = new ArrayList<>();
         observers.clear();
         try {
             in = new ObjectInputStream(new FileInputStream(filename));
             // readObject returns a reference of type Object, hence the down-cast
-            readObject = (ArrayList<DrawObserver>) in.readObject();
-            for(DrawObserver observer : readObject){
+            readObject = (ArrayList<Shape>) in.readObject();
+            for(Shape observer : readObject){
                 observers.add(observer);
             }
         }//try
@@ -69,7 +75,7 @@ public class DrawModel {
     }//deSerializeFromFile
 
 
-    public List<DrawObserver> getObservers(){
+    public List<Shape> getObservers(){
         return observers;
     }
 
@@ -86,13 +92,19 @@ public class DrawModel {
         notifyObservers(gc);
     }//addShape
 
-    public void removeShape(int index){
-
+    public void undo(GraphicsContext gc){
+        if(observers.size() > 0) {
+            undoStack.push(observers.remove(observers.size() - 1));
+            System.out.println("observers length: " + observers.size() + " stack length : " + undoStack.size());
+            notifyObservers(gc);
+        }
     }
 
-    public void removeLatestShape(GraphicsContext gc){
-        observers.remove(observers.size()-1);
-        notifyObservers(gc);
+    public void redo(GraphicsContext gc){
+        if(undoStack.size() > 0){
+            observers.add(undoStack.pop());
+            notifyObservers(gc);
+        }
     }
 
     public void setController(DrawController drawController) {
