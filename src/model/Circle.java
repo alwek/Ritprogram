@@ -11,8 +11,8 @@ public class Circle extends FillableShape{
 
     private double diameter;
 
-    public Circle(double x1, double x2, double y1, double y2, double diameter, boolean filled){
-        super(x1,x2,y1,y2, filled);
+    public Circle(double x1, double x2, double y1, double y2, double diameter, boolean filled, Color color){
+        super(x1,x2,y1,y2, filled, color);
         this.diameter = diameter;
     }
 
@@ -21,14 +21,14 @@ public class Circle extends FillableShape{
 
     @Override
     public Circle clone() throws CloneNotSupportedException {
-        return new Circle(super.getX1(),super.getX2(),super.getY1(),super.getY2(), diameter, super.isFilled());
+        return new Circle(super.getX1(),super.getX2(),super.getY1(),super.getY2(), diameter, super.isFilled(), super.getColor());
     }
 
     @Override
     public void draw(GraphicsContext gc) {
         gc.beginPath();
-        gc.setStroke(Color.BLACK);
-        gc.setFill(Color.BLACK);
+        gc.setStroke(super.getColor());
+        gc.setFill(super.getColor());
         gc.setLineWidth(10);
 
         double maxValueX, maxValueY;

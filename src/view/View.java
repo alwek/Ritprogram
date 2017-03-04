@@ -10,6 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import model.*;
 
 import java.io.IOException;
@@ -172,8 +173,7 @@ public class View extends BorderPane{
                     counter = 0;
                     double x2 = mouseEvent.getX();
                     double y2 = mouseEvent.getY();
-
-                    ShapeFactory shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2), new Rectangle(x1,x2,y1,y2, true), new Circle(x1,x2,y1,y2,0, false));
+                    ShapeFactory shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2, Color.BLACK), new Rectangle(x1,x2,y1,y2, true, Color.BLACK), new Circle(x1,x2,y1,y2,0, false,Color.BLACK));
                     controller.addShape(shapeFactory, gc, selectedShape);
                 }//if
                 else{

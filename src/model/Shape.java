@@ -13,11 +13,12 @@ public abstract class Shape extends Prototype implements DrawObserver, Serializa
     private double x1,x2,y1,y2;
     private Color color;
 
-    protected Shape(double x1, double x2, double y1, double y2){
+    protected Shape(double x1, double x2, double y1, double y2, Color color){
         this.x1=x1;
         this.x2 = x2;
         this.y1 = y1;
         this.y2 = y2;
+        this.color = color;
     }
 
     @Override
@@ -40,4 +41,8 @@ public abstract class Shape extends Prototype implements DrawObserver, Serializa
     public double getY2() { return y2; }
 
     public void setY2(double y2) { this.y2 = y2; }
+
+    public Color getColor() { return color; }
+
+    public void setColor(Color color) { this.color = color; }
 }

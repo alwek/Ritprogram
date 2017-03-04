@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * Created by alica on 2017-02-17.
@@ -9,8 +10,8 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class Line extends Shape{
 
-    public Line(double x1, double x2, double y1, double y2) {
-        super(x1, x2, y1, y2);
+    public Line(double x1, double x2, double y1, double y2, Color color) {
+        super(x1, x2, y1, y2, color);
     }
 
     @Override
@@ -18,7 +19,7 @@ public class Line extends Shape{
 
     @Override
     public Line clone() throws CloneNotSupportedException {
-        return new Line(super.getX1(), super.getX2(), super.getY1(), super.getY2());
+        return new Line(super.getX1(), super.getX2(), super.getY1(), super.getY2(), super.getColor());
     }
 
     @Override

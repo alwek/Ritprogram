@@ -10,23 +10,21 @@ import javafx.scene.paint.Color;
 
 public class Rectangle extends FillableShape{
 
-    public Rectangle(double x1, double x2, double y1, double y2, boolean filled) {
-        super(x1, x2, y1, y2, filled);
-    }
+    public Rectangle(double x1, double x2, double y1, double y2, boolean filled, Color color) { super(x1, x2, y1, y2, filled,color); }
 
     @Override
     public void update(GraphicsContext gc) { draw(gc); }
 
     @Override
     public Rectangle clone() throws CloneNotSupportedException {
-        return new Rectangle(super.getX1(), super.getX2(), super.getY1(),super.getY2(), super.isFilled());
+        return new Rectangle(super.getX1(), super.getX2(), super.getY1(),super.getY2(), super.isFilled(),super.getColor());
     }
 
     @Override
     public void draw(GraphicsContext gc) {
         gc.beginPath();
-        gc.setStroke(Color.BLACK);
-        gc.setFill(Color.BLACK);
+        gc.setStroke(super.getColor());
+        gc.setFill(super.getColor());
         gc.rect(super.getX1(), super.getY1(), super.getX2()-super.getX1(),super.getY2()-super.getY1());
         gc.stroke();
     }
