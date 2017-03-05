@@ -3,7 +3,6 @@ package controller;
 import javafx.scene.canvas.GraphicsContext;
 import model.DrawModel;
 import model.Shape;
-import model.ShapeFactory;
 import view.View;
 
 import java.io.IOException;
@@ -26,7 +25,7 @@ public class DrawController {
 
     public List<Shape> getObservers(){ return drawModel.getObservers(); }
 
-    public void addShape(ShapeFactory shape, GraphicsContext gc, String selectedShape){ drawModel.addShape(shape, gc, selectedShape); }
+    public void addShape(Shape shape, GraphicsContext gc){ drawModel.addShape(shape, gc); }
 
     public void removeLatestShape(GraphicsContext gc){
         drawModel.undo(gc);
