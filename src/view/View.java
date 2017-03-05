@@ -2,8 +2,6 @@ package view;
 
 import controller.DrawController;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -49,21 +47,21 @@ public class View extends BorderPane{
 
     public void setController(DrawController controller){ this.controller = controller; }
 
-    private void init(){
-        createAndDrawCanvas();
-        this.setOnMouseClicked(mouseHandler);
-        this.setOnMouseDragged(mouseHandler);
-        this.setOnMouseEntered(mouseHandler);
-        this.setOnMouseExited(mouseHandler);
-        this.setOnMouseMoved(mouseHandler);
-        this.setOnMousePressed(mouseHandler);
-        this.setOnMouseReleased(mouseHandler);
-    }//init
+    private void init(){ createAndDrawCanvas(); }//init
 
      private void createAndDrawCanvas(){
          Pane wrapperPane = new Pane();
          this.setCenter(wrapperPane);
          canvas = new Canvas();
+
+         canvas.setOnMouseClicked(mouseHandler);
+         canvas.setOnMouseDragged(mouseHandler);
+         canvas.setOnMouseEntered(mouseHandler);
+         canvas.setOnMouseExited(mouseHandler);
+         canvas.setOnMouseMoved(mouseHandler);
+         canvas.setOnMousePressed(mouseHandler);
+         canvas.setOnMouseReleased(mouseHandler);
+
          wrapperPane.getChildren().add(canvas);
          gc = canvas.getGraphicsContext2D();
          canvas.widthProperty().bind(wrapperPane.widthProperty());
@@ -88,16 +86,13 @@ public class View extends BorderPane{
          unfillButton.fire();
          unfillButton.setDisable(true);
 
-         group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-             public void changed(ObservableValue<? extends Toggle> ov,
-                                 Toggle old_toggle, Toggle new_toggle) {
-                 if (group.getSelectedToggle() == fillButton) {
-                     fillOption = true;
-                     System.out.println("FILL OPTION is : "+fillOption);
-                 }else{
-                     fillOption = false;
-                     System.out.println("FIL OPTION is (false): "+fillOption);
-                 }
+         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
+             if (group.getSelectedToggle() == fillButton) {
+                 fillOption = true;
+                 System.out.println("FILL OPTION is : "+fillOption);
+             }else{
+                 fillOption = false;
+                 System.out.println("FIL OPTION is (false): "+fillOption);
              }
          });
 
