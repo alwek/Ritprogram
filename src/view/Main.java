@@ -28,7 +28,7 @@ public class Main extends Application{
         model.setController(drawController);
         fileClass.setDrawController(drawController);
 
-        Scene scene = new Scene(view, 800, 575);
+        Scene scene = new Scene(view, 900, 675);
         primaryStage.setTitle("Extreme Ultimate Drawing Elite Professional Tool Deluxe Edition");
         primaryStage.setScene(scene);
         primaryStage.show();

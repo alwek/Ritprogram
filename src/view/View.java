@@ -28,16 +28,18 @@ public class View extends BorderPane{
     private FileClass fileClass;
     private GraphicsContext gc;
     private Canvas canvas;
-    private int counter = 0;
+    private int counter;
     private double x1,y1;
     private DrawController controller;
 
     private String selectedShape;
     private boolean fillOption;
     private Color colorOption;
+    private double lineWidth;
 
     public View(FileClass fileClass){
         this.fileClass = fileClass;
+        counter=0;
         VBox vBox = new VBox();
         this.setTop(vBox);
         vBox.setPrefWidth(100);
@@ -110,17 +112,17 @@ public class View extends BorderPane{
          colorOption = Color.BLACK;
          colorPicker.setOnAction(event -> colorOption = colorPicker.getValue());
 
-         Label label = new Label("LineWidth: ");
-         Spinner<Integer> spinner = new Spinner<Integer>();
+         Label label = new Label("LineWidth:");
+         Spinner<Integer> spinner = new Spinner<>();
          SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 15, 1);
          spinner.setValueFactory(valueFactory);
+         spinner.valueProperty().addListener((observable, oldValue, newValue) -> lineWidth = newValue );
 
          FlowPane root = new FlowPane();
-         root.setHgap(5);
-         root.setVgap(5);
-         root.setPadding(new Insets(5));
+         root.setHgap(3);
+         root.setVgap(3);
+         root.setPadding(new Insets(3));
          root.getChildren().addAll(label, spinner);
-
          // toolbar ends..
 
          MenuBar menuBar = new MenuBar();
@@ -230,7 +232,8 @@ public class View extends BorderPane{
                     counter = 0;
                     double x2 = mouseEvent.getX();
                     double y2 = mouseEvent.getY();
-                    ShapeFactory shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2, colorOption,0), new Rectangle(x1,x2,y1,y2, fillOption, colorOption,0), new Circle(x1,x2,y1,y2,0, fillOption ,colorOption,0));
+                    System.out.println("lineWidth : "+lineWidth);
+                    ShapeFactory shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2, colorOption, lineWidth), new Rectangle(x1,x2,y1,y2, fillOption, colorOption, lineWidth), new Circle(x1,x2,y1,y2,0, fillOption ,colorOption, lineWidth));
                     controller.addShape(shapeFactory, gc, selectedShape);
                 }//if
                 else{
