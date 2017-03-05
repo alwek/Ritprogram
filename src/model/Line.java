@@ -24,11 +24,8 @@ public class Line extends Shape{
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.beginPath();
         gc.setStroke(super.getColor());
         gc.setLineWidth(super.getLineWidth());
-        gc.moveTo(super.getX1(), super.getY1());
-        gc.lineTo(super.getX2(), super.getY2());
-        gc.stroke();
+        gc.strokeLine(super.getX1(), super.getY1(), super.getX2(), super.getY2());
     }
 }
