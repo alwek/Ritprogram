@@ -2,12 +2,17 @@ package view;
 
 import controller.DrawController;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -26,12 +31,18 @@ public class View extends BorderPane{
     private int counter = 0;
     private double x1,y1;
     private DrawController controller;
+
     private String selectedShape;
+    private boolean fillOption;
+    private Color colorOption;
 
     public View(FileClass fileClass){
         this.fileClass = fileClass;
+        VBox vBox = new VBox();
+        this.setTop(vBox);
+        vBox.setPrefWidth(100);
         init();
-        createMenu();
+        createMenu(vBox);
     }//View
 
     public void setController(DrawController controller){ this.controller = controller; }
@@ -49,17 +60,10 @@ public class View extends BorderPane{
 
      private void createAndDrawCanvas(){
          Pane wrapperPane = new Pane();
-
          this.setCenter(wrapperPane);
-
-         // Put canvas in the center of the window
          canvas = new Canvas();
-
          wrapperPane.getChildren().add(canvas);
-
          gc = canvas.getGraphicsContext2D();
-
-         // Bind the width/height property to the wrapper Pane
          canvas.widthProperty().bind(wrapperPane.widthProperty());
          canvas.heightProperty().bind(wrapperPane.heightProperty());
          System.out.println("boolean resizible: "+canvas.isResizable());
@@ -69,13 +73,58 @@ public class View extends BorderPane{
          draw(canvas);
      }
 
-    private MenuBar createMenu(){
-        VBox vBox = new VBox();
-        vBox.setPrefWidth(100);
+     private MenuBar createMenu(VBox vBox){
+         ToggleGroup group = new ToggleGroup();
 
-        MenuBar menuBar = new MenuBar();
-        vBox.getChildren().add(menuBar);
-        this.setTop(vBox);
+         RadioButton fillButton = new RadioButton("Fill Shape");
+         fillButton.setToggleGroup(group);
+         fillButton.setUserData("Fill Shape");
+         fillButton.setDisable(true);
+         RadioButton unfillButton = new RadioButton("Unfill Shape");
+         unfillButton.setToggleGroup(group);
+         unfillButton.setUserData("Unfill Shape");
+         unfillButton.fire();
+         unfillButton.setDisable(true);
+
+         group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+             public void changed(ObservableValue<? extends Toggle> ov,
+                                 Toggle old_toggle, Toggle new_toggle) {
+                 if (group.getSelectedToggle() == fillButton) {
+                     fillOption = true;
+                     System.out.println("FILL OPTION is : "+fillOption);
+                 }else{
+                     fillOption = false;
+                     System.out.println("FIL OPTION is (false): "+fillOption);
+                 }
+             }
+         });
+
+         Separator separator = new Separator();
+         separator.setOrientation(Orientation.VERTICAL);
+
+         Separator separator1 = new Separator();
+         separator1.setOrientation(Orientation.VERTICAL);
+
+         ColorPicker colorPicker = new ColorPicker();
+         colorPicker.setValue(Color.BLACK);
+         colorOption = Color.BLACK;
+         colorPicker.setOnAction(event -> colorOption = colorPicker.getValue());
+
+         Label label = new Label("LineWidth: ");
+         Spinner<Integer> spinner = new Spinner<Integer>();
+         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 15, 1);
+         spinner.setValueFactory(valueFactory);
+
+         FlowPane root = new FlowPane();
+         root.setHgap(5);
+         root.setVgap(5);
+         root.setPadding(new Insets(5));
+         root.getChildren().addAll(label, spinner);
+
+         // toolbar ends..
+
+         MenuBar menuBar = new MenuBar();
+         vBox.getChildren().add(menuBar);
 
         // File menu - new, save, exit
         Menu fileMenu = new Menu("File");
@@ -118,18 +167,24 @@ public class View extends BorderPane{
             circleMenuItem.setSelected(false);
             rectangleMenuItem.setSelected(true);
             selectedShape = "rectangle";
+            fillButton.setDisable(false);
+            unfillButton.setDisable(false);
         });
         lineMenuItem.setOnAction(actionEvent -> {
             lineMenuItem.setSelected(true);
             circleMenuItem.setSelected(false);
             rectangleMenuItem.setSelected(false);
             selectedShape = "line";
+            fillButton.setDisable(true);
+            unfillButton.setDisable(true);
         });
         circleMenuItem.setOnAction(actionEvent -> {
             lineMenuItem.setSelected(false);
             circleMenuItem.setSelected(true);
             rectangleMenuItem.setSelected(false);
             selectedShape = "circle";
+            fillButton.setDisable(false);
+            unfillButton.setDisable(false);
         });
         //rectangleMenuItem.setSelected(true);
         editMenu.getItems().add(rectangleMenuItem);
@@ -158,8 +213,12 @@ public class View extends BorderPane{
         editMenu.getItems().add(undoMenuItem);
         editMenu.getItems().add(redoMenuItem);
         menuBar.getMenus().addAll(fileMenu, editMenu);
+
+        ToolBar toolBar = new ToolBar();
+        toolBar.getItems().addAll(fillButton, unfillButton, separator, colorPicker,separator1,root);
+        vBox.getChildren().add(toolBar);
         return menuBar;
-    }//createMenuBar
+     }//createMenuBar
 
     private EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>(){
         @Override
@@ -171,7 +230,7 @@ public class View extends BorderPane{
                     counter = 0;
                     double x2 = mouseEvent.getX();
                     double y2 = mouseEvent.getY();
-                    ShapeFactory shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2, Color.BLACK,0), new Rectangle(x1,x2,y1,y2, false, Color.BLUE,0), new Circle(x1,x2,y1,y2,0, true ,Color.GREEN,0));
+                    ShapeFactory shapeFactory = new ShapeFactoryImpl(new Line(x1,x2,y1,y2, colorOption,0), new Rectangle(x1,x2,y1,y2, fillOption, colorOption,0), new Circle(x1,x2,y1,y2,0, fillOption ,colorOption,0));
                     controller.addShape(shapeFactory, gc, selectedShape);
                 }//if
                 else{
@@ -183,11 +242,6 @@ public class View extends BorderPane{
         }//handle
     };
 
-    /**
-     * Draw crossed red lines which each each end is at the corner of window,
-     * and 4 blue circles whose each center is at the corner of the window,
-     * so that make it possible to know where is the extent the Canvas draws
-     */
     private void draw(Canvas canvas) {
         int width = (int) canvas.getWidth();
         int height = (int) canvas.getHeight();
