@@ -241,15 +241,20 @@ public class View extends BorderPane{
                     double x2 = mouseEvent.getX();
                     double y2 = mouseEvent.getY();
                     System.out.println("lineWidth : "+lineWidth);
-                    if(selectedShape.equals("circle"))
-                        controller.addShape(new ShapeFactoryImpl(null,null,new Circle(x1,x2,y1,y2,0, fillOption ,colorOption, lineWidth), null).createCircle(), gc);
-                    else if(selectedShape.equals("line"))
-                        controller.addShape(new ShapeFactoryImpl(new Line(x1,x2,y1,y2, colorOption, lineWidth),null,null,null).createLine(), gc);
-                    else if(selectedShape.equals("rectangle"))
-                        controller.addShape(new ShapeFactoryImpl(null, new Rectangle(x1,x2,y1,y2, fillOption, colorOption, lineWidth),null,null).createRectangle(),gc);
-                    else if(selectedShape.equals("polygon")) {
-                        System.out.println("POLYGON!");
-                        controller.addShape(new ShapeFactoryImpl(null, null, null, new Polygon(x1, x2, y1, y2, fillOption, colorOption, lineWidth)).createPolygon(), gc);
+                    switch (selectedShape) {
+                        case "circle":
+                            controller.addShape(new ShapeFactoryImpl(null, null, new Circle(x1, x2, y1, y2, 0, fillOption, colorOption, lineWidth), null).createCircle(), gc);
+                            break;
+                        case "line":
+                            controller.addShape(new ShapeFactoryImpl(new Line(x1, x2, y1, y2, colorOption, lineWidth), null, null, null).createLine(), gc);
+                            break;
+                        case "rectangle":
+                            controller.addShape(new ShapeFactoryImpl(null, new Rectangle(x1, x2, y1, y2, fillOption, colorOption, lineWidth), null, null).createRectangle(), gc);
+                            break;
+                        case "polygon":
+                            System.out.println("POLYGON!");
+                            controller.addShape(new ShapeFactoryImpl(null, null, null, new Polygon(x1, x2, y1, y2, fillOption, colorOption, lineWidth)).createPolygon(), gc);
+                            break;
                     }
                 }//if
                 else{

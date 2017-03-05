@@ -17,13 +17,13 @@ public class Polygon extends FillableShape{
 
         xPoints[0]= x1;
         xPoints[1]=x2;
-        xPoints[2]=x1;
-        xPoints[3]=x2+200;
+        xPoints[2]=x1+(x1/2);
+        xPoints[3]=x2+(x2/2);
 
         yPoints[0]=y1;
         yPoints[1]=y2;
-        yPoints[2]=y1+2;
-        yPoints[3]=y2+2;
+        yPoints[2]=y1+(y1/2);
+        yPoints[3]=y2+(y2/2);
     }
 
     @Override
