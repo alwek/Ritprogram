@@ -8,4 +8,5 @@ public interface ShapeFactory{
     Line createLine();
     Rectangle createRectangle();
     Circle createCircle();
+    Polygon createPolygon();
 }

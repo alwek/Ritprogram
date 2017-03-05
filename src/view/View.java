@@ -159,6 +159,9 @@ public class View extends BorderPane{
         editMenu.getItems().add(circleMenuItem);
 
         CheckMenuItem rectangleMenuItem = new CheckMenuItem("Rectangle");
+
+        CheckMenuItem polygonMenuItem = new CheckMenuItem("Polygon");
+
         rectangleMenuItem.setOnAction(actionEvent -> {
             lineMenuItem.setSelected(false);
             circleMenuItem.setSelected(false);
@@ -183,8 +186,18 @@ public class View extends BorderPane{
             fillButton.setDisable(false);
             unfillButton.setDisable(false);
         });
+
+        polygonMenuItem.setOnAction(actionEvent ->{
+            lineMenuItem.setSelected(false);
+            circleMenuItem.setSelected(false);
+            rectangleMenuItem.setSelected(false);
+            polygonMenuItem.setSelected(true);
+            selectedShape = "polygon";
+        });
+
         //rectangleMenuItem.setSelected(true);
         editMenu.getItems().add(rectangleMenuItem);
+        editMenu.getItems().add(polygonMenuItem);
         editMenu.getItems().add(new SeparatorMenuItem());
 
         MenuItem clearMenuItem = new MenuItem("Clear");
@@ -229,11 +242,15 @@ public class View extends BorderPane{
                     double y2 = mouseEvent.getY();
                     System.out.println("lineWidth : "+lineWidth);
                     if(selectedShape.equals("circle"))
-                        controller.addShape(new ShapeFactoryImpl(null,null,new Circle(x1,x2,y1,y2,0, fillOption ,colorOption, lineWidth)).createCircle(), gc);
+                        controller.addShape(new ShapeFactoryImpl(null,null,new Circle(x1,x2,y1,y2,0, fillOption ,colorOption, lineWidth), null).createCircle(), gc);
                     else if(selectedShape.equals("line"))
-                        controller.addShape(new ShapeFactoryImpl(new Line(x1,x2,y1,y2, colorOption, lineWidth),null,null).createLine(), gc);
+                        controller.addShape(new ShapeFactoryImpl(new Line(x1,x2,y1,y2, colorOption, lineWidth),null,null,null).createLine(), gc);
                     else if(selectedShape.equals("rectangle"))
-                        controller.addShape(new ShapeFactoryImpl(null, new Rectangle(x1,x2,y1,y2, fillOption, colorOption, lineWidth),null).createRectangle(),gc);
+                        controller.addShape(new ShapeFactoryImpl(null, new Rectangle(x1,x2,y1,y2, fillOption, colorOption, lineWidth),null,null).createRectangle(),gc);
+                    else if(selectedShape.equals("polygon")) {
+                        System.out.println("POLYGON!");
+                        controller.addShape(new ShapeFactoryImpl(null, null, null, new Polygon(x1, x2, y1, y2, fillOption, colorOption, lineWidth)).createPolygon(), gc);
+                    }
                 }//if
                 else{
                     x1 = mouseEvent.getX();

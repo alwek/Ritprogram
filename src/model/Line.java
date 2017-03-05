@@ -27,5 +27,6 @@ public class Line extends Shape{
         gc.setStroke(super.getColor());
         gc.setLineWidth(super.getLineWidth());
         gc.strokeLine(super.getX1(), super.getY1(), super.getX2(), super.getY2());
+        System.out.println("Drawn line!");
     }
 }
