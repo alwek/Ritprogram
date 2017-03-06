@@ -22,8 +22,8 @@ public class Main extends Application{
 
         FileClass fileClass = new FileClass(primaryStage);
         ConfigurationWindow configurationWindow = new ConfigurationWindow();
-
-        View view = new View(fileClass, configurationWindow);
+        SettingsView settingsView = new SettingsView();
+        View view = new View(fileClass, configurationWindow, settingsView);
         DrawController drawController = new DrawController(model, view);
         view.setController(drawController);
         model.setController(drawController);

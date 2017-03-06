@@ -26,7 +26,7 @@ public class Line extends Shape{
     public void draw(GraphicsContext gc) {
         gc.setStroke(super.getColor());
         gc.setLineWidth(super.getLineWidth());
+        System.out.println("Line draw with color and linewidth: "+super.getColor().toString() + " width: "+super.getLineWidth());
         gc.strokeLine(super.getX1(), super.getY1(), super.getX2(), super.getY2());
-        System.out.println("Drawn line!");
     }
 }

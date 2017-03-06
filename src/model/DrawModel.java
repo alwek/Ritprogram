@@ -140,4 +140,14 @@ public class DrawModel {
         notifyObservers(gc);
     }
 
+    public void deleteShape(Shape shape, GraphicsContext gc){
+        for(int i=0;i<observers.size();i++){
+            if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1()){
+                undoStack.push(observers.remove(i));
+                break;
+            }
+        }
+        notifyObservers(gc);
+    }
+
 }//class

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 public class View extends BorderPane{
     private FileClass fileClass;
     private ConfigurationWindow configurationWindow;
+    private SettingsView settingsView;
     private GraphicsContext gc;
     private Canvas canvas;
     private int counter;
@@ -36,9 +37,10 @@ public class View extends BorderPane{
     private Color colorOption;
     private double lineWidth;
 
-    public View(FileClass fileClass, ConfigurationWindow configurationWindow){
+    public View(FileClass fileClass, ConfigurationWindow configurationWindow, SettingsView settingsView){
         this.fileClass = fileClass;
         this.configurationWindow = configurationWindow;
+        this.settingsView = settingsView;
         counter=0;
         VBox vBox = new VBox();
         this.setTop(vBox);
@@ -117,14 +119,22 @@ public class View extends BorderPane{
          spinner.valueProperty().addListener((observable, oldValue, newValue) -> lineWidth = newValue );
 
          FlowPane root = new FlowPane();
-         root.setHgap(3);
-         root.setVgap(3);
-         root.setPadding(new Insets(3));
+         root.setHgap(1);
+         root.setVgap(1);
+         root.setPadding(new Insets(1));
          root.getChildren().addAll(label, spinner);
          // toolbar ends..
 
          MenuBar menuBar = new MenuBar();
          vBox.getChildren().add(menuBar);
+
+        Menu settingsMenu = new Menu("Settings");
+        MenuItem settingsMenuItem = new MenuItem("Settings");
+        settingsMenuItem.setOnAction(actionEvent ->{
+            settingsView.show();
+        });
+
+        settingsMenu.getItems().add(settingsMenuItem);
 
         // File menu - new, save, exit
         Menu fileMenu = new Menu("File");
@@ -151,7 +161,7 @@ public class View extends BorderPane{
 
         // edit menu - Contains drawable shapes
         Menu editMenu = new Menu("Edit");
-        CheckMenuItem mouseMenuItem = new CheckMenuItem("Mouse");
+        CheckMenuItem mouseMenuItem = new CheckMenuItem("Edit shapes");
         editMenu.getItems().addAll(mouseMenuItem, new SeparatorMenuItem());
 
         CheckMenuItem lineMenuItem = new CheckMenuItem("Line");
@@ -163,6 +173,20 @@ public class View extends BorderPane{
         editMenu.getItems().add(circleMenuItem);
         CheckMenuItem rectangleMenuItem = new CheckMenuItem("Rectangle");
         CheckMenuItem polygonMenuItem = new CheckMenuItem("Polygon");
+
+         Separator separator2 = new Separator();
+         separator1.setOrientation(Orientation.VERTICAL);
+
+         Button editShapes = new Button("Edit shapes");
+         editShapes.setOnAction(actionEvent ->{
+             lineMenuItem.setSelected(false);
+             circleMenuItem.setSelected(false);
+             rectangleMenuItem.setSelected(false);
+             selectedShape = "mouse";
+             fillButton.setDisable(false);
+             unfillButton.setDisable(false);
+             mouseMenuItem.setSelected(true);
+         });
 
         rectangleMenuItem.setOnAction(actionEvent -> {
             lineMenuItem.setSelected(false);
@@ -238,10 +262,10 @@ public class View extends BorderPane{
 
         editMenu.getItems().add(undoMenuItem);
         editMenu.getItems().add(redoMenuItem);
-        menuBar.getMenus().addAll(fileMenu, editMenu);
+        menuBar.getMenus().addAll(fileMenu, editMenu, settingsMenu);
 
         ToolBar toolBar = new ToolBar();
-        toolBar.getItems().addAll(fillButton, unfillButton, separator, colorPicker,separator1,root);
+        toolBar.getItems().addAll(fillButton, unfillButton, separator, colorPicker,separator1,root, separator2, editShapes);
         vBox.getChildren().add(toolBar);
         return menuBar;
      }//createMenuBar
@@ -255,7 +279,6 @@ public class View extends BorderPane{
 
                 if(selectedShape.equals("mouse")){
                     //get shapes in this location
-                    System.out.println("MOUSE IN RIGHT AREA!");
                     x1 = mouseEvent.getX();
                     y1 = mouseEvent.getY();
                     Shape shape = controller.getShape(x1, y1);

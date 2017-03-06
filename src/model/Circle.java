@@ -49,13 +49,13 @@ public class Circle extends FillableShape{
 
         super.setWidth(maxValueX - minValueX);
         super.setHeight(maxValueY - minValueY);
+        System.out.println("Circle draw with color and linewidth: "+super.getColor().toString() + " width: "+super.getLineWidth());
         if(!super.isFilled())
             gc.strokeOval(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
         else{
             gc.setFill(super.getColor());
             gc.fillOval(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
         }
-        System.out.println("Drawn circle!");
     }
 
     public double getDiameter() { return diameter; }

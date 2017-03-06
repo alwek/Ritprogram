@@ -40,4 +40,6 @@ public class DrawController {
     public Shape getShape(double x, double y){ return drawModel.getShape(x, y); }
 
     public void updateShape(Shape shape, GraphicsContext gc){ drawModel.updateShape(shape, gc); }
+
+    public void deleteShape(Shape shape, GraphicsContext gc){ drawModel.deleteShape(shape, gc); }
 }//class

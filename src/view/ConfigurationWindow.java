@@ -95,6 +95,7 @@ public class ConfigurationWindow extends Stage{
         delete = new Button("Delete Shape");
         delete.setOnAction(actionEvent -> {
             deleteShape();
+            hide();
         });
 
         ok = new Button("save configuration");
@@ -106,7 +107,10 @@ public class ConfigurationWindow extends Stage{
         this.setOnCloseRequest(we -> hide());
     }
 
-    private void deleteShape(){}
+    private void deleteShape(){
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        controller.deleteShape(shape, gc);
+    }
 
     private void saveConfig(){
         shape.setColor(colorValue);
