@@ -130,10 +130,10 @@ public class DrawModel {
     }//getShape
 
     public void updateShape(Shape shape, GraphicsContext gc){
-        for(Shape shape1 : observers){
-            if(shape1.getX1() == shape.getX1() && shape1.getY1() == shape.getY1()){
-                shape1.setLineWidth(shape.getLineWidth());
-                shape1.setColor(shape.getColor());
+        for(int i=0;i<observers.size();i++){
+            if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1()){
+                undoStack.push(observers.remove(i));
+                observers.add(shape);
                 break;
             }
         }

@@ -46,12 +46,16 @@ public class Circle extends FillableShape{
             maxValueY = super.getY2();
             minValueY = super.getY1();
         }
+
+        super.setWidth(maxValueX - minValueX);
+        super.setHeight(maxValueY - minValueY);
         if(!super.isFilled())
             gc.strokeOval(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
         else{
             gc.setFill(super.getColor());
             gc.fillOval(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
         }
+        System.out.println("Drawn circle!");
     }
 
     public double getDiameter() { return diameter; }

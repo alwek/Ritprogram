@@ -33,6 +33,8 @@ public class Rectangle extends FillableShape{
         if(super.getY1() > super.getY2()){ maxValueY = super.getY1(); minValueY = super.getY2(); }
         else{ maxValueY = super.getY2(); minValueY = super.getY1(); }
 
+        super.setWidth(maxValueX - minValueX);
+        super.setHeight(maxValueY - minValueY);
         if(!super.isFilled())
             gc.strokeRect(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
         else {

@@ -2,6 +2,7 @@ package view;
 
 import controller.DrawController;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -25,6 +26,7 @@ public class ConfigurationWindow extends Stage{
     private Button delete, ok;
 
     private DrawController controller;
+    private Canvas canvas;
     private Color colorValue;
     private double lineWidthVar;
     private boolean filled;
@@ -109,6 +111,7 @@ public class ConfigurationWindow extends Stage{
     private void saveConfig(){
         shape.setColor(colorValue);
         shape.setLineWidth(lineWidthVar);
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         controller.updateShape(shape, gc);
     }
 
@@ -117,6 +120,8 @@ public class ConfigurationWindow extends Stage{
     public void setShape(Shape shape) { this.shape = shape; }
 
     public void setGc(GraphicsContext gc){ this.gc = gc; }
+
+    public void setCanvas(Canvas canvas) { this.canvas = canvas; }
 
     public void operate(){
         colorPicker.setValue(shape.getColor());

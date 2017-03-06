@@ -27,15 +27,11 @@ public class DrawController {
 
     public void addShape(Shape shape, GraphicsContext gc){ drawModel.addShape(shape, gc); }
 
-    public void removeLatestShape(GraphicsContext gc){
-        drawModel.undo(gc);
-    }
+    public void removeLatestShape(GraphicsContext gc){ drawModel.undo(gc); }
 
     public void redo(GraphicsContext gc){ drawModel.redo(gc); }
 
-    public void drawFromReload(){
-        view.drawFromReload();
-    }
+    public void drawFromReload(){ view.drawFromReload(); }
 
     public void serializeToFile(String filename) throws IOException { drawModel.serializeToFile(filename); }
 

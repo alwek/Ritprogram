@@ -45,6 +45,8 @@ public class View extends BorderPane{
         vBox.setPrefWidth(100);
         init();
         createMenu(vBox);
+        configurationWindow.setGc(gc);
+        configurationWindow.setCanvas(canvas);
     }//View
 
     public void setController(DrawController controller){ this.controller = controller; }
@@ -68,7 +70,6 @@ public class View extends BorderPane{
          gc = canvas.getGraphicsContext2D();
          canvas.widthProperty().bind(wrapperPane.widthProperty());
          canvas.heightProperty().bind(wrapperPane.heightProperty());
-         System.out.println("boolean resizible: "+canvas.isResizable());
          // redraw when resized
          canvas.widthProperty().addListener(event -> draw(canvas));
          canvas.heightProperty().addListener(event -> draw(canvas));
@@ -249,7 +250,7 @@ public class View extends BorderPane{
         @Override
         public void handle(MouseEvent mouseEvent) {
             if(mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED){
-                System.out.println("Mouse pressed");
+                System.out.println("Mouse pressed with selected value: "+selectedShape);
                 System.out.println("Counter: " + counter);
 
                 if(selectedShape.equals("mouse")){
@@ -261,7 +262,6 @@ public class View extends BorderPane{
                     if(shape != null) {
                         configurationWindow.show();
                         configurationWindow.setShape(shape);
-                        configurationWindow.setGc(gc);
                         configurationWindow.operate();
                     }
                 }
@@ -272,6 +272,7 @@ public class View extends BorderPane{
                     System.out.println("lineWidth : "+lineWidth);
                     switch (selectedShape) {
                         case "circle":
+                            System.out.println("Creating circle!");
                             controller.addShape(new ShapeFactoryImpl(null, null, new Circle(x1, x2, y1, y2, 0, fillOption, colorOption, lineWidth), null).createCircle(), gc);
                             break;
                         case "line":
