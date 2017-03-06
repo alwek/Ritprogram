@@ -15,10 +15,12 @@ public class DrawModel {
     private List<Shape> observers;
     private DrawController drawController;
     private Stack<Shape> undoStack;
+    private boolean specialUndo;
 
     public DrawModel(){
         observers = new ArrayList<>();
         undoStack = new Stack<>();
+        specialUndo = false;
     }//DrawModel
 
     /**
@@ -87,15 +89,22 @@ public class DrawModel {
     }//addShape
 
     public void undo(GraphicsContext gc){
-        if(observers.size() > 0) {
-            undoStack.push(observers.remove(observers.size() - 1));
-            System.out.println("observers length: " + observers.size() + " stack length : " + undoStack.size());
-            notifyObservers(gc);
+        if(specialUndo){
+            System.out.println("Special case");
+            specialUndo = false;
+            observers.add(undoStack.pop());
         }
+        else{
+            if(observers.size() > 0) {
+                undoStack.push(observers.remove(observers.size() - 1));
+                System.out.println("observers length: " + observers.size() + " stack length : " + undoStack.size());
+            }
+        }
+        notifyObservers(gc);
     }
 
     public void redo(GraphicsContext gc){
-        if(undoStack.size() > 0){
+        if(undoStack.size() > 0 & !specialUndo){
             System.out.println("UNDO FLAG SET, REDOING...");
             observers.add(undoStack.pop());
             notifyObservers(gc);
@@ -133,6 +142,7 @@ public class DrawModel {
         for(int i=0;i<observers.size();i++){
             if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1()){
                 undoStack.push(observers.remove(i));
+                specialUndo=true;
                 observers.add(shape);
                 break;
             }
@@ -144,6 +154,7 @@ public class DrawModel {
         for(int i=0;i<observers.size();i++){
             if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1()){
                 undoStack.push(observers.remove(i));
+                specialUndo=true;
                 break;
             }
         }
