@@ -27,7 +27,6 @@ public class Rectangle extends FillableShape{
 
         gc.setLineWidth(super.getLineWidth());
         gc.setStroke(super.getColor());
-
         if(super.getX1() > super.getX2()){ maxValueX = super.getX1(); minValueX = super.getX2(); }
         else{ maxValueX = super.getX2(); minValueX = super.getX1(); }
 

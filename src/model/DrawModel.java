@@ -2,7 +2,6 @@ package model;
 
 import controller.DrawController;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -112,19 +111,33 @@ public class DrawModel {
             observer.update(gc);
     }
 
-    public void getShape(double x, double y, double lineWidth, boolean fillOption, Color colorOption, GraphicsContext gc){
+    public Shape getShape(double x, double y){
         for(Shape observer : observers){
             if(observer.getX1() < x && observer.getX2() > x){
                 if(observer.getY1() < y && observer.getY2() > y){
-                    System.out.println("clicked on: " + observer.getClass().getName());
-                    observer.setLineWidth(lineWidth);
+                 //   System.out.println("clicked on: " + observer.getClass().getName());
+                 //   observer.setLineWidth(lineWidth);
                     //if(fillOption)
-                        observer.setColor(colorOption);
+                 //       observer.setColor(colorOption);
 
-                    notifyObservers(gc);
+                 //   notifyObservers(gc);
+                    System.out.println("clicked on: " + observer.getClass().getName());
+                    return observer;
                 }//if
             }//f
         }//for
+        return null;
     }//getShape
+
+    public void updateShape(Shape shape, GraphicsContext gc){
+        for(Shape shape1 : observers){
+            if(shape1.getX1() == shape.getX1() && shape1.getY1() == shape.getY1()){
+                shape1.setLineWidth(shape.getLineWidth());
+                shape1.setColor(shape.getColor());
+                break;
+            }
+        }
+        notifyObservers(gc);
+    }
 
 }//class

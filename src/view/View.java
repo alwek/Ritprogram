@@ -24,6 +24,7 @@ import java.util.ArrayList;
  */
 public class View extends BorderPane{
     private FileClass fileClass;
+    private ConfigurationWindow configurationWindow;
     private GraphicsContext gc;
     private Canvas canvas;
     private int counter;
@@ -35,8 +36,9 @@ public class View extends BorderPane{
     private Color colorOption;
     private double lineWidth;
 
-    public View(FileClass fileClass){
+    public View(FileClass fileClass, ConfigurationWindow configurationWindow){
         this.fileClass = fileClass;
+        this.configurationWindow = configurationWindow;
         counter=0;
         VBox vBox = new VBox();
         this.setTop(vBox);
@@ -249,11 +251,19 @@ public class View extends BorderPane{
             if(mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED){
                 System.out.println("Mouse pressed");
                 System.out.println("Counter: " + counter);
+
                 if(selectedShape.equals("mouse")){
                     //get shapes in this location
+                    System.out.println("MOUSE IN RIGHT AREA!");
                     x1 = mouseEvent.getX();
                     y1 = mouseEvent.getY();
-                    controller.getShape(x1, y1, lineWidth, fillOption, colorOption, gc);
+                    Shape shape = controller.getShape(x1, y1);
+                    if(shape != null) {
+                        configurationWindow.show();
+                        configurationWindow.setShape(shape);
+                        configurationWindow.setGc(gc);
+                        configurationWindow.operate();
+                    }
                 }
                 else if(counter == 1){
                     counter = 0;

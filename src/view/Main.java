@@ -21,12 +21,14 @@ public class Main extends Application{
         DrawModel model = new DrawModel();
 
         FileClass fileClass = new FileClass(primaryStage);
+        ConfigurationWindow configurationWindow = new ConfigurationWindow();
 
-        View view = new View(fileClass);
+        View view = new View(fileClass, configurationWindow);
         DrawController drawController = new DrawController(model, view);
         view.setController(drawController);
         model.setController(drawController);
         fileClass.setDrawController(drawController);
+        configurationWindow.setController(drawController);
 
         Scene scene = new Scene(view, 900, 675);
         primaryStage.setTitle("Extreme Ultimate Drawing Elite Professional Tool Deluxe Edition");

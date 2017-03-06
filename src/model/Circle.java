@@ -46,7 +46,6 @@ public class Circle extends FillableShape{
             maxValueY = super.getY2();
             minValueY = super.getY1();
         }
-
         if(!super.isFilled())
             gc.strokeOval(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
         else{
