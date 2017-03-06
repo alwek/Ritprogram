@@ -124,12 +124,6 @@ public class DrawModel {
         for(Shape observer : observers){
             if(observer.getX1() < x && observer.getX2() > x){
                 if(observer.getY1() < y && observer.getY2() > y){
-                 //   System.out.println("clicked on: " + observer.getClass().getName());
-                 //   observer.setLineWidth(lineWidth);
-                    //if(fillOption)
-                 //       observer.setColor(colorOption);
-
-                 //   notifyObservers(gc);
                     System.out.println("clicked on: " + observer.getClass().getName());
                     return observer;
                 }//if
