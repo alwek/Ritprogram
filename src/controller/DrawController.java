@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import model.DrawModel;
 import model.Shape;
 import view.View;
@@ -40,4 +41,8 @@ public class DrawController {
     public void serializeToFile(String filename) throws IOException { drawModel.serializeToFile(filename); }
 
     public void deSerializeFromFile(String filename) throws IOException, ClassNotFoundException { drawModel.deSerializeFromFile(filename); }
+
+    public void getShape(double x, double y, double lineWidth, boolean fillOption, Color colorOption, GraphicsContext gc){
+        drawModel.getShape(x, y, lineWidth, fillOption, colorOption, gc);
+    }
 }//class

@@ -2,6 +2,7 @@ package model;
 
 import controller.DrawController;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -110,5 +111,20 @@ public class DrawModel {
         for(DrawObserver observer : observers)
             observer.update(gc);
     }
+
+    public void getShape(double x, double y, double lineWidth, boolean fillOption, Color colorOption, GraphicsContext gc){
+        for(Shape observer : observers){
+            if(observer.getX1() < x && observer.getX2() > x){
+                if(observer.getY1() < y && observer.getY2() > y){
+                    System.out.println("clicked on: " + observer.getClass().getName());
+                    observer.setLineWidth(lineWidth);
+                    //if(fillOption)
+                        observer.setColor(colorOption);
+
+                    notifyObservers(gc);
+                }//if
+            }//f
+        }//for
+    }//getShape
 
 }//class

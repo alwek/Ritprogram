@@ -148,6 +148,8 @@ public class View extends BorderPane{
 
         // edit menu - Contains drawable shapes
         Menu editMenu = new Menu("Edit");
+        CheckMenuItem mouseMenuItem = new CheckMenuItem("Mouse");
+        editMenu.getItems().addAll(mouseMenuItem, new SeparatorMenuItem());
 
         CheckMenuItem lineMenuItem = new CheckMenuItem("Line");
         lineMenuItem.setSelected(true);
@@ -155,11 +157,8 @@ public class View extends BorderPane{
         selectedShape = "line";
 
         CheckMenuItem circleMenuItem = new CheckMenuItem("Circle");
-        //circleMenuItem.setSelected(true);
         editMenu.getItems().add(circleMenuItem);
-
         CheckMenuItem rectangleMenuItem = new CheckMenuItem("Rectangle");
-
         CheckMenuItem polygonMenuItem = new CheckMenuItem("Polygon");
 
         rectangleMenuItem.setOnAction(actionEvent -> {
@@ -169,6 +168,7 @@ public class View extends BorderPane{
             selectedShape = "rectangle";
             fillButton.setDisable(false);
             unfillButton.setDisable(false);
+            mouseMenuItem.setSelected(false);
         });
         lineMenuItem.setOnAction(actionEvent -> {
             lineMenuItem.setSelected(true);
@@ -177,6 +177,7 @@ public class View extends BorderPane{
             selectedShape = "line";
             fillButton.setDisable(true);
             unfillButton.setDisable(true);
+            mouseMenuItem.setSelected(false);
         });
         circleMenuItem.setOnAction(actionEvent -> {
             lineMenuItem.setSelected(false);
@@ -185,6 +186,7 @@ public class View extends BorderPane{
             selectedShape = "circle";
             fillButton.setDisable(false);
             unfillButton.setDisable(false);
+            mouseMenuItem.setSelected(false);
         });
 
         polygonMenuItem.setOnAction(actionEvent ->{
@@ -193,9 +195,20 @@ public class View extends BorderPane{
             rectangleMenuItem.setSelected(false);
             polygonMenuItem.setSelected(true);
             selectedShape = "polygon";
+            mouseMenuItem.setSelected(false);
         });
 
-        //rectangleMenuItem.setSelected(true);
+        mouseMenuItem.setOnAction(actionEvent -> {
+            lineMenuItem.setSelected(false);
+            circleMenuItem.setSelected(false);
+            rectangleMenuItem.setSelected(false);
+            polygonMenuItem.setSelected(false);
+            mouseMenuItem.setSelected(true);
+            selectedShape = "mouse";
+            fillButton.setDisable(false);
+            unfillButton.setDisable(false);
+        });
+
         editMenu.getItems().add(rectangleMenuItem);
         editMenu.getItems().add(polygonMenuItem);
         editMenu.getItems().add(new SeparatorMenuItem());
@@ -236,7 +249,13 @@ public class View extends BorderPane{
             if(mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED){
                 System.out.println("Mouse pressed");
                 System.out.println("Counter: " + counter);
-                if(counter == 1){
+                if(selectedShape.equals("mouse")){
+                    //get shapes in this location
+                    x1 = mouseEvent.getX();
+                    y1 = mouseEvent.getY();
+                    controller.getShape(x1, y1, lineWidth, fillOption, colorOption, gc);
+                }
+                else if(counter == 1){
                     counter = 0;
                     double x2 = mouseEvent.getX();
                     double y2 = mouseEvent.getY();
