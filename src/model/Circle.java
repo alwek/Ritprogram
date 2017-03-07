@@ -49,7 +49,7 @@ public class Circle extends FillableShape{
 
         super.setWidth(maxValueX - minValueX);
         super.setHeight(maxValueY - minValueY);
-        System.out.println("Circle draw with color and linewidth: "+super.getColor().toString() + " width: "+super.getLineWidth());
+        System.out.println("Circle draw with color and linewidth: "+(super.getColor()!=null? super.getColor().toString() : null) + " width: "+super.getLineWidth());
         if(!super.isFilled())
             gc.strokeOval(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
         else{

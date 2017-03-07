@@ -15,12 +15,13 @@ public class DrawModel {
     private List<Shape> observers;
     private DrawController drawController;
     private Stack<Shape> undoStack;
-    private boolean specialUndo;
+    private boolean updateUndo, deleteUndo;
 
     public DrawModel(){
         observers = new ArrayList<>();
         undoStack = new Stack<>();
-        specialUndo = false;
+        updateUndo = false;
+        deleteUndo=false;
     }//DrawModel
 
     /**
@@ -86,14 +87,21 @@ public class DrawModel {
         observers.add(shape);
         notifyObservers(gc);
         undoStack.clear();
-        specialUndo=false;
+        updateUndo = false;
+        deleteUndo=false;
     }//addShape
 
     public void undo(GraphicsContext gc){
-        if(specialUndo){
-            System.out.println("Special case");
-            specialUndo = false;
+        if(deleteUndo){
+            System.out.println("Special case delete");
+            deleteUndo = !deleteUndo;
             observers.add(undoStack.pop());
+        }else if(updateUndo){
+            System.out.println("Special case update");
+            updateUndo = !updateUndo;
+            Shape shape = undoStack.pop();
+            observers.remove(observers.size()-1);
+            observers.add(shape);
         }else{
             if(observers.size() > 0) {
                 undoStack.push(observers.remove(observers.size() - 1));
@@ -104,7 +112,7 @@ public class DrawModel {
     }
 
     public void redo(GraphicsContext gc){
-        if(undoStack.size() > 0 & !specialUndo){
+        if(undoStack.size() > 0 && !updateUndo && !deleteUndo){
             System.out.println("UNDO FLAG SET, REDOING...");
             observers.add(undoStack.pop());
             notifyObservers(gc);
@@ -124,6 +132,7 @@ public class DrawModel {
         for(Shape observer : observers){
             if(observer.getX1() < x && observer.getX2() > x){
                 if(observer.getY1() < y && observer.getY2() > y){
+                    System.out.println("Found shape to get, the shape found has color: "+observer.getColor());
                     System.out.println("clicked on: " + observer.getClass().getName());
                     return observer;
                 }//if
@@ -132,11 +141,22 @@ public class DrawModel {
         return null;
     }//getShape
 
-    public void updateShape(Shape shape, GraphicsContext gc){
+    public void updateShape(Shape shape, GraphicsContext gc, boolean isfilled){
         for(int i=0;i<observers.size();i++){
             if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1() && observers.get(i).getY2() == shape.getY2() && observers.get(i).getX2() == shape.getX2()){
+                System.out.println("Found shape to update, the shape found has color: "+observers.get(i).getColor());
+                if(shape instanceof Circle){
+                    Circle circle = (Circle) shape;
+                    circle.setFilled(isfilled);
+                }else if(shape instanceof Rectangle){
+                    Rectangle rectangle = (Rectangle) shape;
+                    rectangle.setFilled(isfilled);
+                }else if(shape instanceof Polygon){
+                    Polygon polygon =(Polygon) shape;
+                    polygon.setFilled(isfilled);
+                }
                 undoStack.push(observers.remove(i));
-                specialUndo=true;
+                updateUndo=true;
                 observers.add(shape);
                 System.out.println("ADDED SHAPE AND LINE WIDTH: "+shape.getLineWidth());
                 break;
@@ -148,9 +168,9 @@ public class DrawModel {
     public void deleteShape(Shape shape, GraphicsContext gc){
         for(int i=0;i<observers.size();i++){
             if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1() && observers.get(i).getY2() == shape.getY2() && observers.get(i).getX2() == shape.getX2()){
-                System.out.println("Found shape to delete");
+                System.out.println("Found shape to delete, the shape found has color: "+observers.get(i).getColor());
                 undoStack.push(observers.remove(i));
-                specialUndo=true;
+                deleteUndo=true;
                 break;
             }
         }

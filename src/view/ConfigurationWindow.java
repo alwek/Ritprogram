@@ -10,8 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Line;
-import model.Shape;
+import model.*;
 
 /**
  * Created by dani on 2017-03-06.
@@ -34,7 +33,6 @@ public class ConfigurationWindow extends Stage{
     private GraphicsContext gc;
 
     public ConfigurationWindow(){
-        init();
 
         GridPane gp = new GridPane();
         VBox vBox = new VBox();
@@ -53,9 +51,10 @@ public class ConfigurationWindow extends Stage{
 
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
             if (group.getSelectedToggle() == fillButton) {
-
+                filled=true;
                 System.out.println("FILL OPTION is : ");
             }else{
+                filled=false;
                 System.out.println("FIL OPTION is (false): ");
             }
         });
@@ -68,6 +67,8 @@ public class ConfigurationWindow extends Stage{
         spinner.setValueFactory(valueFactory);
 
         spinner.valueProperty().addListener((observable, oldValue, newValue) -> lineWidthVar = newValue );
+
+        init();
 
         gp.add(color,0 ,0);
         gp.add(colorPicker, 1,0);
@@ -88,6 +89,9 @@ public class ConfigurationWindow extends Stage{
     }
 
     private void init(){
+        lineWidthVar = 1;
+        colorValue = colorPicker.getValue();
+
         color = new Label("Pick color:");
         lineWidth = new Label("Choose line width:");
         fillUnfill = new Label("Choose to fill or unfill Shape:");
@@ -116,7 +120,8 @@ public class ConfigurationWindow extends Stage{
         shape.setColor(colorValue);
         shape.setLineWidth(lineWidthVar);
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        controller.updateShape(shape, gc);
+        System.out.println("BEFORE UPDATE: "+" COLOR: "+colorValue + " width: "+lineWidthVar + " filld: "+filled);
+        controller.updateShape(shape, gc, filled);
     }
 
     public void setController(DrawController controller) { this.controller = controller; }
@@ -129,13 +134,33 @@ public class ConfigurationWindow extends Stage{
 
     public void operate(){
         colorPicker.setValue(shape.getColor());
+        colorValue=shape.getColor();
         valueFactory.setValue(shape.getLineWidth());
 
-        if(!(shape instanceof Line)){
-            filled = false;
-        }else{
+        Shape create = null;
+        if(shape instanceof Line){
+            System.out.println("Config Line");
             unfillButton.setDisable(true);
             fillButton.setDisable(true);
+            Line line = (Line) shape;
+            filled = false;
+            create = line;
+        }else if(shape instanceof Circle){
+            System.out.println("Config Circle");
+            Circle circle = (Circle) shape;
+            filled=circle.isFilled();
+            create = circle;
+        }else if(shape instanceof Rectangle){
+            System.out.println("Config Rectangle");
+            Rectangle rectangle = (Rectangle) shape;
+            filled = rectangle.isFilled();
+            create = rectangle;
+        }else if(shape instanceof Polygon){
+            System.out.println("Config Polygon");
+            Polygon polygon = (Polygon) shape;
+            filled=polygon.isFilled();
+            create = polygon;
         }
+        shape = create;
     }
 }

@@ -300,6 +300,7 @@ public class View extends BorderPane{
                     //get shapes in this location
                     x1 = mouseEvent.getX();
                     y1 = mouseEvent.getY();
+
                     Shape shape = controller.getShape(x1, y1);
                     if(shape != null) {
                         configurationWindow.show();

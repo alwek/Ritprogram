@@ -27,7 +27,7 @@ public class Rectangle extends FillableShape{
 
         gc.setLineWidth(super.getLineWidth());
         gc.setStroke(super.getColor());
-        System.out.println("Rectangle draw with color and linewidth: "+super.getColor().toString() + " width: "+super.getLineWidth());
+        System.out.println("Rectangle draw with color and linewidth: "+(super.getColor()!=null? super.getColor().toString() : null) + " width: "+super.getLineWidth());
         if(super.getX1() > super.getX2()){ maxValueX = super.getX1(); minValueX = super.getX2(); }
         else{ maxValueX = super.getX2(); minValueX = super.getX1(); }
 
