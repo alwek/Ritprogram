@@ -20,8 +20,7 @@ public class ConfigurationWindow extends Stage{
     private Label color, lineWidth, fillUnfill;
     private RadioButton fillButton, unfillButton;
     private ColorPicker colorPicker;
-    private Spinner<Double> spinner;
-    SpinnerValueFactory<Double> valueFactory;
+    private SpinnerValueFactory<Double> valueFactory;
     private Button delete, ok;
 
     private DrawController controller;
@@ -61,7 +60,7 @@ public class ConfigurationWindow extends Stage{
         colorPicker = new ColorPicker();
         colorPicker.setOnAction(event -> colorValue = colorPicker.getValue());
 
-        spinner = new Spinner<>();
+        Spinner<Double> spinner = new Spinner<>();
         valueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 15, 1);
         spinner.setValueFactory(valueFactory);
 
@@ -81,7 +80,7 @@ public class ConfigurationWindow extends Stage{
         gp.add(new Label(""),0, 5);
         gp.add(delete, 0, 6);
         gp.add(ok, 1, 6);
-        this.setScene(new Scene(gp));
+        this.setScene(new Scene(gp, 470,180));
         this.setTitle("Shape Configuration");
         this.initModality(Modality.APPLICATION_MODAL);
         this.setResizable(false);
@@ -136,7 +135,7 @@ public class ConfigurationWindow extends Stage{
         colorValue=shape.getColor();
         valueFactory.setValue(shape.getLineWidth());
 
-        ShapeFactory shapeFactory = null;
+        ShapeFactory shapeFactory;
         if(shape instanceof Line){
             System.out.println("Config Line");
             unfillButton.setDisable(true);
@@ -170,9 +169,9 @@ public class ConfigurationWindow extends Stage{
 
     private void updateRadioButtons(){
         if(fillButton.isDisable())
-            fillButton.setDisable(true);
+            fillButton.setDisable(false);
         if(unfillButton.isDisable())
-            unfillButton.setDisable(true);
+            unfillButton.setDisable(false);
 
         if(filled) {
             fillButton.fire();
