@@ -93,14 +93,13 @@ public class DrawModel {
             System.out.println("Special case");
             specialUndo = false;
             observers.add(undoStack.pop());
-            notifyObservers(gc);
         }else{
             if(observers.size() > 0) {
                 undoStack.push(observers.remove(observers.size() - 1));
                 System.out.println("observers length: " + observers.size() + " stack length : " + undoStack.size());
-                notifyObservers(gc);
             }
         }
+        notifyObservers(gc);
     }
 
     public void redo(GraphicsContext gc){
