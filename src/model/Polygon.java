@@ -43,7 +43,12 @@ public class Polygon extends FillableShape{
     public void draw(GraphicsContext gc) {
         gc.setLineWidth(super.getLineWidth());
         gc.setStroke(super.getColor());
-        gc.strokePolygon(xPoints,yPoints,5);
+        if(!super.isFilled())
+            gc.strokePolygon(xPoints,yPoints,5);
+        else{
+            gc.setFill(super.getColor());
+            gc.fillPolygon(xPoints, yPoints,5);
+        }
         System.out.println("Drawn polygon!");
     }
 }

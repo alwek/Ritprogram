@@ -42,6 +42,7 @@ public class View extends BorderPane{
         this.configurationWindow = configurationWindow;
         this.settingsView = settingsView;
         counter=0;
+        lineWidth=1;
         VBox vBox = new VBox();
         this.setTop(vBox);
         vBox.setPrefWidth(100);
@@ -184,8 +185,10 @@ public class View extends BorderPane{
              rectangleMenuItem.setSelected(false);
              polygonMenuItem.setSelected(false);
              selectedShape = "mouse";
-             fillButton.setDisable(false);
-             unfillButton.setDisable(false);
+             fillButton.setDisable(true);
+             unfillButton.setDisable(true);
+             colorPicker.setDisable(true);
+             spinner.setDisable(true);
              mouseMenuItem.setSelected(true);
          });
 
@@ -197,6 +200,8 @@ public class View extends BorderPane{
             selectedShape = "rectangle";
             fillButton.setDisable(false);
             unfillButton.setDisable(false);
+            colorPicker.setDisable(false);
+            spinner.setDisable(false);
             mouseMenuItem.setSelected(false);
         });
         lineMenuItem.setOnAction(actionEvent -> {
@@ -207,6 +212,8 @@ public class View extends BorderPane{
             selectedShape = "line";
             fillButton.setDisable(true);
             unfillButton.setDisable(true);
+            colorPicker.setDisable(false);
+            spinner.setDisable(false);
             mouseMenuItem.setSelected(false);
         });
         circleMenuItem.setOnAction(actionEvent -> {
@@ -217,6 +224,8 @@ public class View extends BorderPane{
             selectedShape = "circle";
             fillButton.setDisable(false);
             unfillButton.setDisable(false);
+            colorPicker.setDisable(false);
+            spinner.setDisable(false);
             mouseMenuItem.setSelected(false);
         });
 
@@ -225,6 +234,10 @@ public class View extends BorderPane{
             circleMenuItem.setSelected(false);
             rectangleMenuItem.setSelected(false);
             polygonMenuItem.setSelected(true);
+            colorPicker.setDisable(false);
+            spinner.setDisable(false);
+            fillButton.setDisable(false);
+            unfillButton.setDisable(false);
             selectedShape = "polygon";
             mouseMenuItem.setSelected(false);
             fillButton.setDisable(false);

@@ -86,6 +86,7 @@ public class DrawModel {
         observers.add(shape);
         notifyObservers(gc);
         undoStack.clear();
+        specialUndo=false;
     }//addShape
 
     public void undo(GraphicsContext gc){
@@ -147,6 +148,7 @@ public class DrawModel {
     public void deleteShape(Shape shape, GraphicsContext gc){
         for(int i=0;i<observers.size();i++){
             if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1() && observers.get(i).getY2() == shape.getY2() && observers.get(i).getX2() == shape.getX2()){
+                System.out.println("Found shape to delete");
                 undoStack.push(observers.remove(i));
                 specialUndo=true;
                 break;

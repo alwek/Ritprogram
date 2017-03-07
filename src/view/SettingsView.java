@@ -18,7 +18,7 @@ public class SettingsView extends Stage {
     private void init(){
         BorderPane bp = new BorderPane();
 
-        TextArea textArea = new TextArea("Settings");
+        TextArea textArea = new TextArea("User Manual\n \n");
         textArea.appendText("Use the menu to edit shapes, choose shape to create with color, linewidth and other stuff.\n \n");
         textArea.appendText("Use the toolbar menu to customize the shape before creating it.\n \n");
         textArea.appendText("Click on edit shapes button and the choose shape to edit!");
