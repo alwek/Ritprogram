@@ -169,9 +169,16 @@ public class ConfigurationWindow extends Stage{
     }
 
     private void updateRadioButtons(){
-        if(filled)
+        if(fillButton.isDisable())
+            fillButton.setDisable(true);
+        if(unfillButton.isDisable())
+            unfillButton.setDisable(true);
+
+        if(filled) {
             fillButton.fire();
-        else
+        }
+        else {
             unfillButton.fire();
+        }
     }
 }
