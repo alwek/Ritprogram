@@ -12,18 +12,23 @@ public class Polygon extends FillableShape{
 
     public Polygon(double x1, double x2, double y1, double y2, boolean filled, Color color, double lineWidth) {
         super(x1, x2, y1, y2, filled, color, lineWidth);
-        xPoints = new double[4];
-        yPoints = new double[4];
+        xPoints = new double[5];
+        yPoints = new double[5];
 
-        xPoints[0]= x1;
-        xPoints[1]=x2;
-        xPoints[2]=x1+(x1/2);
-        xPoints[3]=x2+(x2/2);
+        double xMargin = (x2-x1)/4;
+        double yMargin = (y2-y1);
+
+        xPoints[0]=x1;
+        xPoints[1]=x1+xMargin*2;
+        xPoints[2]=x1+xMargin*4;
+        xPoints[3]=x1+xMargin*3;
+        xPoints[4]=x1+xMargin;
 
         yPoints[0]=y1;
-        yPoints[1]=y2;
-        yPoints[2]=y1+(y1/2);
-        yPoints[3]=y2+(y2/2);
+        yPoints[1]=y1-yMargin;
+        yPoints[2]=y1;
+        yPoints[3]=y1+yMargin;
+        yPoints[4]=y1+yMargin;
     }
 
     @Override
@@ -38,7 +43,7 @@ public class Polygon extends FillableShape{
     public void draw(GraphicsContext gc) {
         gc.setLineWidth(super.getLineWidth());
         gc.setStroke(super.getColor());
-        gc.strokePolygon(xPoints,yPoints,4);
+        gc.strokePolygon(xPoints,yPoints,5);
         System.out.println("Drawn polygon!");
     }
 }

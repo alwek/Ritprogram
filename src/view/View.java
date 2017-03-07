@@ -182,6 +182,7 @@ public class View extends BorderPane{
              lineMenuItem.setSelected(false);
              circleMenuItem.setSelected(false);
              rectangleMenuItem.setSelected(false);
+             polygonMenuItem.setSelected(false);
              selectedShape = "mouse";
              fillButton.setDisable(false);
              unfillButton.setDisable(false);
@@ -192,6 +193,7 @@ public class View extends BorderPane{
             lineMenuItem.setSelected(false);
             circleMenuItem.setSelected(false);
             rectangleMenuItem.setSelected(true);
+            polygonMenuItem.setSelected(false);
             selectedShape = "rectangle";
             fillButton.setDisable(false);
             unfillButton.setDisable(false);
@@ -201,6 +203,7 @@ public class View extends BorderPane{
             lineMenuItem.setSelected(true);
             circleMenuItem.setSelected(false);
             rectangleMenuItem.setSelected(false);
+            polygonMenuItem.setSelected(false);
             selectedShape = "line";
             fillButton.setDisable(true);
             unfillButton.setDisable(true);
@@ -210,6 +213,7 @@ public class View extends BorderPane{
             lineMenuItem.setSelected(false);
             circleMenuItem.setSelected(true);
             rectangleMenuItem.setSelected(false);
+            polygonMenuItem.setSelected(false);
             selectedShape = "circle";
             fillButton.setDisable(false);
             unfillButton.setDisable(false);
@@ -223,6 +227,8 @@ public class View extends BorderPane{
             polygonMenuItem.setSelected(true);
             selectedShape = "polygon";
             mouseMenuItem.setSelected(false);
+            fillButton.setDisable(false);
+            unfillButton.setDisable(false);
         });
 
         mouseMenuItem.setOnAction(actionEvent -> {
