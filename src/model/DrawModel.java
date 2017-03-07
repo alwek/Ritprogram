@@ -93,14 +93,14 @@ public class DrawModel {
             System.out.println("Special case");
             specialUndo = false;
             observers.add(undoStack.pop());
-        }
-        else{
+            notifyObservers(gc);
+        }else{
             if(observers.size() > 0) {
                 undoStack.push(observers.remove(observers.size() - 1));
                 System.out.println("observers length: " + observers.size() + " stack length : " + undoStack.size());
+                notifyObservers(gc);
             }
         }
-        notifyObservers(gc);
     }
 
     public void redo(GraphicsContext gc){
@@ -134,10 +134,11 @@ public class DrawModel {
 
     public void updateShape(Shape shape, GraphicsContext gc){
         for(int i=0;i<observers.size();i++){
-            if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1()){
+            if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1() && observers.get(i).getY2() == shape.getY2() && observers.get(i).getX2() == shape.getX2()){
                 undoStack.push(observers.remove(i));
                 specialUndo=true;
                 observers.add(shape);
+                System.out.println("ADDED SHAPE AND LINE WIDTH: "+shape.getLineWidth());
                 break;
             }
         }
@@ -146,7 +147,7 @@ public class DrawModel {
 
     public void deleteShape(Shape shape, GraphicsContext gc){
         for(int i=0;i<observers.size();i++){
-            if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1()){
+            if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1() && observers.get(i).getY2() == shape.getY2() && observers.get(i).getX2() == shape.getX2()){
                 undoStack.push(observers.remove(i));
                 specialUndo=true;
                 break;
