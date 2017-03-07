@@ -35,20 +35,14 @@ public class Polygon extends FillableShape{
     public void update(GraphicsContext gc) { draw(gc); }
 
     @Override
-    public Polygon clone() throws CloneNotSupportedException {
-        return new Polygon(super.getX1(), super.getX2(), super.getY1(), super.getY2(), super.isFilled(), super.getColor(), super.getLineWidth());
-    }
+    public Polygon clone() throws CloneNotSupportedException { return new Polygon(super.getX1(), super.getX2(), super.getY1(), super.getY2(), super.isFilled(), super.getColor(), super.getLineWidth()); }
 
     @Override
-    public void draw(GraphicsContext gc) {
-        gc.setLineWidth(super.getLineWidth());
-        gc.setStroke(super.getColor());
+    public void drawShape(GraphicsContext gc) {
         if(!super.isFilled())
             gc.strokePolygon(xPoints,yPoints,5);
-        else{
-            gc.setFill(super.getColor());
+        else
             gc.fillPolygon(xPoints, yPoints,5);
-        }
         System.out.println("Drawn polygon!");
     }
 }

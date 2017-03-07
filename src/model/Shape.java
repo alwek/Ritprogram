@@ -31,7 +31,15 @@ public abstract class Shape extends Prototype implements DrawObserver, Serializa
     @Override
     public abstract Shape clone() throws CloneNotSupportedException;
 
-    public abstract void draw(GraphicsContext gc);
+    final public void draw(GraphicsContext gc){
+        gc.setStroke(getColor());
+        gc.setLineWidth(getLineWidth());
+        gc.setFill(getColor());
+
+        drawShape(gc);
+    }
+
+    public abstract void drawShape(GraphicsContext gc);
 
     // serialize color object --> källa: stackOverflow
     private void writeObject(ObjectOutputStream s) throws IOException {

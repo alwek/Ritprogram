@@ -21,12 +21,11 @@ public class Rectangle extends FillableShape{
     }
 
     @Override
-    public void draw(GraphicsContext gc) {
+    public void drawShape(GraphicsContext gc) {
+
         double maxValueX, maxValueY;
         double minValueX, minValueY;
 
-        gc.setLineWidth(super.getLineWidth());
-        gc.setStroke(super.getColor());
         System.out.println("Rectangle draw with color and linewidth: "+(super.getColor()!=null? super.getColor().toString() : null) + " width: "+super.getLineWidth());
         if(super.getX1() > super.getX2()){ maxValueX = super.getX1(); minValueX = super.getX2(); }
         else{ maxValueX = super.getX2(); minValueX = super.getX1(); }
@@ -38,9 +37,8 @@ public class Rectangle extends FillableShape{
         super.setHeight(maxValueY - minValueY);
         if(!super.isFilled())
             gc.strokeRect(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
-        else {
-            gc.setFill(super.getColor());
+        else
             gc.fillRect(minValueX, minValueY, maxValueX - minValueX, maxValueY - minValueY);
-        }
+
     }
 }
