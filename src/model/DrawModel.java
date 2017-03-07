@@ -98,10 +98,10 @@ public class DrawModel {
             observers.add(undoStack.pop());
         }else if(updateUndo){
             System.out.println("Special case update");
-            updateUndo = !updateUndo;
             Shape shape = undoStack.pop();
             observers.remove(observers.size()-1);
             observers.add(shape);
+            updateUndo = !updateUndo;
         }else{
             if(observers.size() > 0) {
                 undoStack.push(observers.remove(observers.size() - 1));

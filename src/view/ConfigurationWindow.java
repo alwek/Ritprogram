@@ -47,7 +47,6 @@ public class ConfigurationWindow extends Stage{
         unfillButton = new RadioButton("Unfill Shape");
         unfillButton.setToggleGroup(group);
         unfillButton.setUserData("Unfill Shape");
-        unfillButton.fire();
 
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
             if (group.getSelectedToggle() == fillButton) {
@@ -137,30 +136,42 @@ public class ConfigurationWindow extends Stage{
         colorValue=shape.getColor();
         valueFactory.setValue(shape.getLineWidth());
 
-        Shape create = null;
+        ShapeFactory shapeFactory = null;
         if(shape instanceof Line){
             System.out.println("Config Line");
             unfillButton.setDisable(true);
             fillButton.setDisable(true);
-            Line line = (Line) shape;
             filled = false;
-            create = line;
+            shapeFactory = new ShapeFactoryImpl(new Line(shape.getX1(),shape.getX2(), shape.getY1(), shape.getY2(), shape.getColor(), shape.getLineWidth()), null,null,null);
+            shape = shapeFactory.createLine();
         }else if(shape instanceof Circle){
             System.out.println("Config Circle");
             Circle circle = (Circle) shape;
+            shapeFactory = new ShapeFactoryImpl(null, null, new Circle(circle.getX1(), circle.getX2(), circle.getY1(), circle.getY2(), circle.getDiameter(), circle.isFilled(), circle.getColor(), circle.getLineWidth()),null);
             filled=circle.isFilled();
-            create = circle;
+            shape = shapeFactory.createCircle();
+            updateRadioButtons();
         }else if(shape instanceof Rectangle){
             System.out.println("Config Rectangle");
             Rectangle rectangle = (Rectangle) shape;
+            shapeFactory = new ShapeFactoryImpl(null, new Rectangle(rectangle.getX1(), rectangle.getX2(), rectangle.getY1(), rectangle.getY2(),rectangle.isFilled(),rectangle.getColor(),rectangle.getLineWidth()), null,null);
             filled = rectangle.isFilled();
-            create = rectangle;
+            shape = shapeFactory.createRectangle();
+            updateRadioButtons();
         }else if(shape instanceof Polygon){
             System.out.println("Config Polygon");
             Polygon polygon = (Polygon) shape;
             filled=polygon.isFilled();
-            create = polygon;
+            shapeFactory = new ShapeFactoryImpl(null, null, null,new Polygon(polygon.getX1(),polygon.getX2(),polygon.getY1(),polygon.getY2(),polygon.isFilled(),polygon.getColor(),polygon.getLineWidth()));
+            shape = shapeFactory.createPolygon();
+            updateRadioButtons();
         }
-        shape = create;
+    }
+
+    private void updateRadioButtons(){
+        if(filled)
+            fillButton.fire();
+        else
+            unfillButton.fire();
     }
 }
