@@ -1,7 +1,8 @@
 package model;
 
 /**
- * Created by dani on 2017-02-25.
+ * Created by dani on 2017-02-25
+ * Inspired by https://github.com/iluwatar/java-design-patterns%E2%80%8B
  */
 public class ShapeFactoryImpl implements ShapeFactory {
 

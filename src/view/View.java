@@ -79,6 +79,11 @@ public class View extends BorderPane{
          draw(canvas);
      }
 
+    /**
+     * Inspired by Stackoverflow: only some graphic parts like spinner.
+     * @param vBox
+     * @return
+     */
      private MenuBar createMenu(VBox vBox){
          ToggleGroup group = new ToggleGroup();
 
