@@ -345,10 +345,8 @@ public class View extends BorderPane{
     };
 
     private void draw(Canvas canvas) {
-        int width = (int) canvas.getWidth();
-        int height = (int) canvas.getHeight();
         gc = canvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, width, height);
+        clearCanvas();
         drawFromReload();
     }//draw on resize
 
