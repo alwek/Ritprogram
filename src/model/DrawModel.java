@@ -177,4 +177,17 @@ public class DrawModel {
         notifyObservers(gc);
     }
 
+    public void moveShape(double x1, double y1, double x2, double y2, GraphicsContext gc){
+        Shape shape = getShape(x1, y1);
+        System.out.println("Shape at: X1 = " + shape.getX1() + " Y1 = " + shape.getY1() + " X2 = " + shape.getX2() + " Y2 = " + shape.getY2());
+        observers.remove(shape);
+        double yMargin = shape.getY2() - shape.getY1();
+        double xMargin = shape.getX2() - shape.getX1();
+        shape.setX1(x2);
+        shape.setY1(y2);
+        shape.setX2(x2 + xMargin);
+        shape.setX2(y2 + yMargin);
+        updateShape(shape, gc, false);
+        System.out.println("Shape is now at: X1 = " + shape.getX1() + " Y1 = " + shape.getY1() + " X2 = " + shape.getX2() + " Y2 = " + shape.getY2());
+    }
 }//class

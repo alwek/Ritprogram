@@ -36,6 +36,7 @@ public class View extends BorderPane{
     private boolean fillOption;
     private Color colorOption;
     private double lineWidth;
+    private boolean doubleClick;
 
     public View(FileClass fileClass, ConfigurationWindow configurationWindow, SettingsView settingsView){
         this.fileClass = fileClass;
@@ -297,11 +298,24 @@ public class View extends BorderPane{
     private EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>(){
         @Override
         public void handle(MouseEvent mouseEvent) {
-            if(mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED){
+            if(mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED){
                 System.out.println("Mouse pressed with selected value: "+selectedShape);
                 System.out.println("Counter: " + counter);
 
-                if(selectedShape.equals("mouse")){
+                if(doubleClick && selectedShape.equals("mouse")){
+                    System.out.println("event with double click");
+                    doubleClick = false;
+                    double x2 = mouseEvent.getX();
+                    double y2 = mouseEvent.getY();
+                    controller.moveShape(x1, y1, x2, y2, gc);
+                }
+                else if(mouseEvent.isControlDown()){
+                    System.out.println("double click detected");
+                    doubleClick = true;
+                    x1 = mouseEvent.getX();
+                    y1 = mouseEvent.getY();
+                }
+                else if(selectedShape.equals("mouse") && selectedShape.equals("mouse")){
                     //get shapes in this location
                     x1 = mouseEvent.getX();
                     y1 = mouseEvent.getY();

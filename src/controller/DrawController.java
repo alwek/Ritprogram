@@ -42,4 +42,8 @@ public class DrawController {
     public void updateShape(Shape shape, GraphicsContext gc, boolean isfilled){ drawModel.updateShape(shape, gc, isfilled); }
 
     public void deleteShape(Shape shape, GraphicsContext gc){ drawModel.deleteShape(shape, gc); }
+
+    public void moveShape(double x1, double y1, double x2, double y2, GraphicsContext gc){
+        drawModel.moveShape(x1,y1,x2,y2,gc);
+    }
 }//class
