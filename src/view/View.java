@@ -36,7 +36,6 @@ public class View extends BorderPane{
     private boolean fillOption;
     private Color colorOption;
     private double lineWidth;
-    private boolean doubleClick;
 
     public View(FileClass fileClass, ConfigurationWindow configurationWindow, SettingsView settingsView){
         this.fileClass = fileClass;

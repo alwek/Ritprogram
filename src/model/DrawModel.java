@@ -201,13 +201,11 @@ public class DrawModel implements DrawModelInterface{
                 Circle circle = (Circle) shape;
                 shapeFactory = new ShapeFactoryImpl(null, null, new Circle(circle.getX1(), circle.getX2(), circle.getY1(), circle.getY2(), circle.getDiameter(), circle.isFilled(), circle.getColor(), circle.getLineWidth()), null);
                 shape = shapeFactory.createCircle();
-                //    updateRadioButtons();
             } else if (shape instanceof Rectangle) {
                 System.out.println("Config Rectangle");
                 Rectangle rectangle = (Rectangle) shape;
                 shapeFactory = new ShapeFactoryImpl(null, new Rectangle(rectangle.getX1(), rectangle.getX2(), rectangle.getY1(), rectangle.getY2(), rectangle.isFilled(), rectangle.getColor(), rectangle.getLineWidth()), null, null);
                 shape = shapeFactory.createRectangle();
-                //    updateRadioButtons();
             } else if (shape instanceof Polygon) {
                 System.out.println("Config Polygon");
                 Polygon polygon = (Polygon) shape;
