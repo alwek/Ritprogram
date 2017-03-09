@@ -1,6 +1,6 @@
 package view;
 
-import controller.DrawController;
+import controller.DrawControllerInterface;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,7 +23,7 @@ public class ConfigurationWindow extends Stage{
     private SpinnerValueFactory<Double> valueFactory;
     private Button delete, ok;
 
-    private DrawController controller;
+    private DrawControllerInterface controller;
     private Canvas canvas;
     private Color colorValue;
     private double lineWidthVar;
@@ -122,7 +122,7 @@ public class ConfigurationWindow extends Stage{
         controller.updateShape(shape, gc, filled);
     }
 
-    public void setController(DrawController controller) { this.controller = controller; }
+    public void setController(DrawControllerInterface controller) { this.controller = controller; }
 
     public void setShape(Shape shape) { this.shape = shape; }
 

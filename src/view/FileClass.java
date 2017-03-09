@@ -1,6 +1,7 @@
 package view;
 
 import controller.DrawController;
+import controller.DrawControllerInterface;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -21,11 +22,11 @@ public class FileClass{
     private final Alert alert = new Alert(Alert.AlertType.ERROR);
     private File file;
     private Stage stage;
-    private DrawController drawController;
+    private DrawControllerInterface drawController;
 
     public FileClass(Stage stage){ this.stage=stage; }
 
-    public void setDrawController(DrawController drawController){ this.drawController = drawController; }
+    public void setDrawController(DrawControllerInterface drawController){ this.drawController = drawController; }
 
     public void openFile(){
         FileChooser fileChooser = new FileChooser();

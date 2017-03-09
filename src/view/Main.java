@@ -1,6 +1,7 @@
 package view;
 
 import controller.DrawController;
+import controller.DrawControllerInterface;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -24,7 +25,7 @@ public class Main extends Application{
         ConfigurationWindow configurationWindow = new ConfigurationWindow();
         SettingsView settingsView = new SettingsView();
         View view = new View(fileClass, configurationWindow, settingsView);
-        DrawController drawController = new DrawController(model, view);
+        DrawControllerInterface drawController = new DrawController(model, view);
         view.setController(drawController);
         model.setController(drawController);
         fileClass.setDrawController(drawController);

@@ -1,6 +1,6 @@
 package model;
 
-import controller.DrawController;
+import controller.DrawControllerInterface;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.*;
@@ -13,7 +13,7 @@ import java.util.Stack;
  */
 public class DrawModel {
     private List<Shape> observers;
-    private DrawController drawController;
+    private DrawControllerInterface drawController;
     private Stack<Shape> undoStack;
     private boolean updateUndo, deleteUndo;
 
@@ -119,7 +119,7 @@ public class DrawModel {
         }
     }
 
-    public void setController(DrawController drawController) {
+    public void setController(DrawControllerInterface drawController) {
         this.drawController = drawController;
     }
 

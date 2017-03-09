@@ -1,6 +1,7 @@
 package view;
 
 import controller.DrawController;
+import controller.DrawControllerInterface;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -30,7 +31,7 @@ public class View extends BorderPane{
     private Canvas canvas;
     private int counter;
     private double x1,y1;
-    private DrawController controller;
+    private DrawControllerInterface controller;
 
     private String selectedShape;
     private boolean fillOption;
@@ -53,7 +54,7 @@ public class View extends BorderPane{
         configurationWindow.setCanvas(canvas);
     }//View
 
-    public void setController(DrawController controller){ this.controller = controller; }
+    public void setController(DrawControllerInterface controller){ this.controller = controller; }
 
     private void init(){ createAndDrawCanvas(); }//init
 
