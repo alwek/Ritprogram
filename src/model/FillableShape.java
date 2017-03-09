@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 /**
  * Created by dani on 2017-03-01.
  */
-abstract public class FillableShape extends Shape{
+public abstract class FillableShape extends Shape{
 
     private boolean filled;
 
