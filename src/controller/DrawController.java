@@ -1,7 +1,7 @@
 package controller;
 
 import javafx.scene.canvas.GraphicsContext;
-import model.DrawModel;
+import model.DrawModelInterface;
 import model.Shape;
 import view.View;
 
@@ -13,10 +13,10 @@ import java.util.List;
  * Good luck, Commander!
  */
 public class DrawController implements DrawControllerInterface{
-    private DrawModel drawModel;
+    private DrawModelInterface drawModel;
     private View view;
 
-    public DrawController(DrawModel drawModel, View view){
+    public DrawController(DrawModelInterface drawModel, View view){
         this.drawModel = drawModel;
         this.view = view;
     }//DrawController

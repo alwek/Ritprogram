@@ -11,7 +11,7 @@ import java.util.Stack;
 /**
  * Created by dani on 2017-02-25.
  */
-public class DrawModel {
+public class DrawModel implements DrawModelInterface{
     private List<Shape> observers;
     private DrawControllerInterface drawController;
     private Stack<Shape> undoStack;

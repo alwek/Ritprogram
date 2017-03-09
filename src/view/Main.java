@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.DrawModel;
+import model.DrawModelInterface;
 
 /**
  * Created by alica on 2017-02-17.
@@ -19,7 +20,7 @@ public class Main extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        DrawModel model = new DrawModel();
+        DrawModelInterface model = new DrawModel();
 
         FileClass fileClass = new FileClass(primaryStage);
         ConfigurationWindow configurationWindow = new ConfigurationWindow();
