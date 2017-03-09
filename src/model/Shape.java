@@ -14,7 +14,7 @@ import java.io.Serializable;
 public abstract class Shape extends Prototype implements DrawObserver, Serializable{
 
     private double x1,x2,y1,y2;
-    // serialize color
+    // serialize color stackoverflow
     transient private Color color;
     private double lineWidth;
 
