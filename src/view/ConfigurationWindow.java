@@ -143,26 +143,29 @@ public class ConfigurationWindow extends Stage{
             filled = false;
             shapeFactory = new ShapeFactoryImpl(new Line(shape.getX1(),shape.getX2(), shape.getY1(), shape.getY2(), shape.getColor(), shape.getLineWidth()), null,null,null);
             shape = shapeFactory.createLine();
-        }else if(shape instanceof Circle){
-            System.out.println("Config Circle");
-            Circle circle = (Circle) shape;
-            shapeFactory = new ShapeFactoryImpl(null, null, new Circle(circle.getX1(), circle.getX2(), circle.getY1(), circle.getY2(), circle.getDiameter(), circle.isFilled(), circle.getColor(), circle.getLineWidth()),null);
-            filled=circle.isFilled();
-            shape = shapeFactory.createCircle();
-            updateRadioButtons();
-        }else if(shape instanceof Rectangle){
-            System.out.println("Config Rectangle");
-            Rectangle rectangle = (Rectangle) shape;
-            shapeFactory = new ShapeFactoryImpl(null, new Rectangle(rectangle.getX1(), rectangle.getX2(), rectangle.getY1(), rectangle.getY2(),rectangle.isFilled(),rectangle.getColor(),rectangle.getLineWidth()), null,null);
-            filled = rectangle.isFilled();
-            shape = shapeFactory.createRectangle();
-            updateRadioButtons();
-        }else if(shape instanceof Polygon){
-            System.out.println("Config Polygon");
-            Polygon polygon = (Polygon) shape;
-            filled=polygon.isFilled();
-            shapeFactory = new ShapeFactoryImpl(null, null, null,new Polygon(polygon.getX1(),polygon.getX2(),polygon.getY1(),polygon.getY2(),polygon.isFilled(),polygon.getColor(),polygon.getLineWidth()));
-            shape = shapeFactory.createPolygon();
+        }else{
+            if(shape instanceof Circle){
+                System.out.println("Config Circle");
+                Circle circle = (Circle) shape;
+                shapeFactory = new ShapeFactoryImpl(null, null, new Circle(circle.getX1(), circle.getX2(), circle.getY1(), circle.getY2(), circle.getDiameter(), circle.isFilled(), circle.getColor(), circle.getLineWidth()),null);
+                filled=circle.isFilled();
+                shape = shapeFactory.createCircle();
+            //    updateRadioButtons();
+            }else if(shape instanceof Rectangle){
+                System.out.println("Config Rectangle");
+                Rectangle rectangle = (Rectangle) shape;
+                shapeFactory = new ShapeFactoryImpl(null, new Rectangle(rectangle.getX1(), rectangle.getX2(), rectangle.getY1(), rectangle.getY2(),rectangle.isFilled(),rectangle.getColor(),rectangle.getLineWidth()), null,null);
+                filled = rectangle.isFilled();
+                shape = shapeFactory.createRectangle();
+            //    updateRadioButtons();
+            }else if(shape instanceof Polygon){
+                System.out.println("Config Polygon");
+                Polygon polygon = (Polygon) shape;
+                filled=polygon.isFilled();
+                shapeFactory = new ShapeFactoryImpl(null, null, null,new Polygon(polygon.getX1(),polygon.getX2(),polygon.getY1(),polygon.getY2(),polygon.isFilled(),polygon.getColor(),polygon.getLineWidth()));
+                shape = shapeFactory.createPolygon();
+
+            }
             updateRadioButtons();
         }
     }
