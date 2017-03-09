@@ -21,5 +21,5 @@ public interface DrawControllerInterface {
     Shape getShape(double x, double y);
     void updateShape(Shape shape, GraphicsContext gc, boolean isfilled);
     void deleteShape(Shape shape, GraphicsContext gc);
-    void moveShape(double x1, double y1, double x2, double y2, GraphicsContext gc);
+    Shape checkAndCreateShape(Shape shape);
 }

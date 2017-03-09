@@ -29,6 +29,7 @@ public class DrawModel implements DrawModelInterface{
      * @param filename
      * @throws IOException
      */
+    @Override
     public void serializeToFile(String filename) throws IOException {
         ObjectOutputStream out = null;
         try {
@@ -53,6 +54,7 @@ public class DrawModel implements DrawModelInterface{
      * @throws IOException
      * @throws ClassNotFoundException
      */
+    @Override
     public void deSerializeFromFile(String filename) throws IOException, ClassNotFoundException{
         ObjectInputStream in = null;
         ArrayList<Shape> readObject = new ArrayList<>();
@@ -77,12 +79,15 @@ public class DrawModel implements DrawModelInterface{
         drawController.drawFromReload();
     }//deSerializeFromFile
 
+    @Override
     public List<Shape> getObservers(){
         return observers;
     }
 
+    @Override
     public void clearObservers(){ observers.clear(); }
 
+    @Override
     public void addShape(Shape shape, GraphicsContext gc){
         observers.add(shape);
         notifyObservers(gc);
@@ -91,6 +96,7 @@ public class DrawModel implements DrawModelInterface{
         deleteUndo=false;
     }//addShape
 
+    @Override
     public void undo(GraphicsContext gc){
         if(deleteUndo){
             System.out.println("Special case delete");
@@ -111,6 +117,7 @@ public class DrawModel implements DrawModelInterface{
         notifyObservers(gc);
     }
 
+    @Override
     public void redo(GraphicsContext gc){
         if(undoStack.size() > 0 && !updateUndo && !deleteUndo){
             System.out.println("UNDO FLAG SET, REDOING...");
@@ -119,6 +126,7 @@ public class DrawModel implements DrawModelInterface{
         }
     }
 
+    @Override
     public void setController(DrawControllerInterface drawController) {
         this.drawController = drawController;
     }
@@ -128,6 +136,7 @@ public class DrawModel implements DrawModelInterface{
             observer.update(gc);
     }
 
+    @Override
     public Shape getShape(double x, double y){
         for(Shape observer : observers){
             if(observer.getX1() < x && observer.getX2() > x){
@@ -141,6 +150,7 @@ public class DrawModel implements DrawModelInterface{
         return null;
     }//getShape
 
+    @Override
     public void updateShape(Shape shape, GraphicsContext gc, boolean isfilled){
         for(int i=0;i<observers.size();i++){
             if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1() && observers.get(i).getY2() == shape.getY2() && observers.get(i).getX2() == shape.getX2()){
@@ -165,6 +175,7 @@ public class DrawModel implements DrawModelInterface{
         notifyObservers(gc);
     }
 
+    @Override
     public void deleteShape(Shape shape, GraphicsContext gc){
         for(int i=0;i<observers.size();i++){
             if(observers.get(i).getX1() == shape.getX1() && observers.get(i).getY1() == shape.getY1() && observers.get(i).getY2() == shape.getY2() && observers.get(i).getX2() == shape.getX2()){
@@ -177,17 +188,33 @@ public class DrawModel implements DrawModelInterface{
         notifyObservers(gc);
     }
 
-    public void moveShape(double x1, double y1, double x2, double y2, GraphicsContext gc){
-        Shape shape = getShape(x1, y1);
-        System.out.println("Shape at: X1 = " + shape.getX1() + " Y1 = " + shape.getY1() + " X2 = " + shape.getX2() + " Y2 = " + shape.getY2());
-        observers.remove(shape);
-        double yMargin = shape.getY2() - shape.getY1();
-        double xMargin = shape.getX2() - shape.getX1();
-        shape.setX1(x2);
-        shape.setY1(y2);
-        shape.setX2(x2 + xMargin);
-        shape.setX2(y2 + yMargin);
-        updateShape(shape, gc, false);
-        System.out.println("Shape is now at: X1 = " + shape.getX1() + " Y1 = " + shape.getY1() + " X2 = " + shape.getX2() + " Y2 = " + shape.getY2());
+    @Override
+    public Shape checkAndCreateShape(Shape shape){
+        ShapeFactory shapeFactory;
+        if(shape instanceof Line){
+            System.out.println("Config Line");
+            shapeFactory = new ShapeFactoryImpl(new Line(shape.getX1(),shape.getX2(), shape.getY1(), shape.getY2(), shape.getColor(), shape.getLineWidth()), null,null,null);
+            shape = shapeFactory.createLine();
+        }else {
+            if (shape instanceof Circle) {
+                System.out.println("Config Circle");
+                Circle circle = (Circle) shape;
+                shapeFactory = new ShapeFactoryImpl(null, null, new Circle(circle.getX1(), circle.getX2(), circle.getY1(), circle.getY2(), circle.getDiameter(), circle.isFilled(), circle.getColor(), circle.getLineWidth()), null);
+                shape = shapeFactory.createCircle();
+                //    updateRadioButtons();
+            } else if (shape instanceof Rectangle) {
+                System.out.println("Config Rectangle");
+                Rectangle rectangle = (Rectangle) shape;
+                shapeFactory = new ShapeFactoryImpl(null, new Rectangle(rectangle.getX1(), rectangle.getX2(), rectangle.getY1(), rectangle.getY2(), rectangle.isFilled(), rectangle.getColor(), rectangle.getLineWidth()), null, null);
+                shape = shapeFactory.createRectangle();
+                //    updateRadioButtons();
+            } else if (shape instanceof Polygon) {
+                System.out.println("Config Polygon");
+                Polygon polygon = (Polygon) shape;
+                shapeFactory = new ShapeFactoryImpl(null, null, null, new Polygon(polygon.getX1(), polygon.getX2(), polygon.getY1(), polygon.getY2(), polygon.isFilled(), polygon.getColor(), polygon.getLineWidth()));
+                shape = shapeFactory.createPolygon();
+            }
+        }
+        return shape;
     }
 }//class

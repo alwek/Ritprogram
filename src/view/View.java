@@ -1,6 +1,5 @@
 package view;
 
-import controller.DrawController;
 import controller.DrawControllerInterface;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -303,20 +302,7 @@ public class View extends BorderPane{
                 System.out.println("Mouse pressed with selected value: "+selectedShape);
                 System.out.println("Counter: " + counter);
 
-                if(doubleClick && selectedShape.equals("mouse")){
-                    System.out.println("event with double click");
-                    doubleClick = false;
-                    double x2 = mouseEvent.getX();
-                    double y2 = mouseEvent.getY();
-                    controller.moveShape(x1, y1, x2, y2, gc);
-                }
-                else if(mouseEvent.isControlDown()){
-                    System.out.println("double click detected");
-                    doubleClick = true;
-                    x1 = mouseEvent.getX();
-                    y1 = mouseEvent.getY();
-                }
-                else if(selectedShape.equals("mouse") && selectedShape.equals("mouse")){
+                if(selectedShape.equals("mouse")){
                     //get shapes in this location
                     x1 = mouseEvent.getX();
                     y1 = mouseEvent.getY();

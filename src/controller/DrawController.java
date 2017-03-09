@@ -21,27 +21,39 @@ public class DrawController implements DrawControllerInterface{
         this.view = view;
     }//DrawController
 
+    @Override
     public void clearObserversList(){ drawModel.clearObservers(); }
 
+    @Override
     public List<Shape> getObservers(){ return drawModel.getObservers(); }
 
+    @Override
     public void addShape(Shape shape, GraphicsContext gc){ drawModel.addShape(shape, gc); }
 
+    @Override
     public void removeLatestShape(GraphicsContext gc){ drawModel.undo(gc); }
 
+    @Override
     public void redo(GraphicsContext gc){ drawModel.redo(gc); }
 
+    @Override
     public void drawFromReload(){ view.drawFromReload(); }
 
+    @Override
     public void serializeToFile(String filename) throws IOException { drawModel.serializeToFile(filename); }
 
+    @Override
     public void deSerializeFromFile(String filename) throws IOException, ClassNotFoundException { drawModel.deSerializeFromFile(filename); }
 
+    @Override
     public Shape getShape(double x, double y){ return drawModel.getShape(x, y); }
 
+    @Override
     public void updateShape(Shape shape, GraphicsContext gc, boolean isfilled){ drawModel.updateShape(shape, gc, isfilled); }
 
+    @Override
     public void deleteShape(Shape shape, GraphicsContext gc){ drawModel.deleteShape(shape, gc); }
 
-    public void moveShape(double x1, double y1, double x2, double y2, GraphicsContext gc){ drawModel.moveShape(x1,y1,x2,y2,gc); }
+    @Override
+    public Shape checkAndCreateShape(Shape shape) { return drawModel.checkAndCreateShape(shape); }
 }//class
