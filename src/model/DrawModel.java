@@ -99,15 +99,9 @@ public class DrawModel implements DrawModelInterface{
     @Override
     public void undo(GraphicsContext gc){
         if(deleteUndo){
-            System.out.println("Special case delete");
-            deleteUndo = !deleteUndo;
-            observers.add(undoStack.pop());
+            new DeleteUndo().undo(this);
         }else if(updateUndo){
-            System.out.println("Special case update");
-            Shape shape = undoStack.pop();
-            observers.remove(observers.size()-1);
-            observers.add(shape);
-            updateUndo = !updateUndo;
+            new UpdateUndoInterface().undo(this);
         }else{
             if(observers.size() > 0) {
                 undoStack.push(observers.remove(observers.size() - 1));
@@ -215,4 +209,25 @@ public class DrawModel implements DrawModelInterface{
         }
         return shape;
     }
+
+    @Override
+    public void setObservers(List<Shape> observers) { this.observers = observers; }
+
+    @Override
+    public Stack<Shape> getUndoStack() { return undoStack; }
+
+    @Override
+    public void setUndoStack(Stack<Shape> undoStack) { this.undoStack = undoStack; }
+
+    @Override
+    public boolean isUpdateUndo() { return updateUndo; }
+
+    @Override
+    public void setUpdateUndo(boolean updateUndo) { this.updateUndo = updateUndo; }
+
+    @Override
+    public boolean isDeleteUndo() { return deleteUndo; }
+
+    @Override
+    public void setDeleteUndo(boolean deleteUndo) { this.deleteUndo = deleteUndo; }
 }//class
