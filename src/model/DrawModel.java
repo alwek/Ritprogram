@@ -99,12 +99,14 @@ public class DrawModel implements DrawModelInterface{
     @Override
     public void undo(GraphicsContext gc){
         if(deleteUndo){
-            new DeleteUndo().undo(this);
+            new DeleteUndo().undo(undoStack.pop(), this);
+            deleteUndo=false;
         }else if(updateUndo){
-            new UpdateUndoInterface().undo(this);
+            new UpdateUndo().undo(undoStack.pop(), this);
+            updateUndo=false;
         }else{
             if(observers.size() > 0) {
-                undoStack.push(observers.remove(observers.size() - 1));
+                new Undo().undo(observers.remove(observers.size()-1), this);
                 System.out.println("observers length: " + observers.size() + " stack length : " + undoStack.size());
             }
         }
